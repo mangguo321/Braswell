@@ -1,0 +1,51 @@
+## @file
+#  SMM Based SPI Device Dxe Driver
+#
+#  Adds platform support to configure the SPI controller with the correct values
+#  to be used when using software sequencing. This driver installs gSpiDeviceProtocolGuid
+#  protocol based on SMM based SPI device driver.
+#
+#  Copyright (c) 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010018
+  BASE_NAME                      = SpiDeviceSmmDxe
+  FILE_GUID                      = D7AC2008-CFBE-44A4-AD92-573F1AB9DF45
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InitSpiDevice
+  
+[Sources]
+  SpiDeviceSmmDxe.c
+  SpiDevice.h
+
+[Packages]
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  DxeServicesTableLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Protocols]  
+  gSpiDeviceProtocolGuid            ## PRODUCES
+  gSmmSpiDeviceProtocolGuid         ## CONSUMES
+  gEfiSmmCommunicationProtocolGuid  ## CONSUMES
+
+[Depex]
+  gEfiSmmCommunicationProtocolGuid
+

@@ -1,0 +1,41 @@
+## @file
+#  DXE PCH Smbus Lib
+#
+#  This function provides a standard way to execute Smbus sequential
+#  I2C Read. This function allows the PCH to perform block reads to
+#  certain I2C devices, such as serial E2PROMs. Typically these data
+#  bytes correspond to an offset (address) within the serial memory
+#  chips. 
+#
+#  Copyright (c) 2012 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PchSmbusLibDxe
+  FILE_GUID                      = D0388F40-9669-4fae-A995-C2B835B47089
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PchSmbusLibDxe
+
+[sources.common]
+  ..\Common\PchSmbusLib.c
+  PchSmbusLib.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  IoLib
+

@@ -1,0 +1,97 @@
+## @file
+#  Component description file for PlatformEarlyInit module
+#
+#  This module will do early platform initialization during pei stage.
+#
+#  Copyright (c) 1999 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                   = 0x00010005
+  BASE_NAME                     = PlatformEarlyInit
+  FILE_GUID                     = E039B4AC-DAB5-44FC-AA40-86079CE4C263
+  MODULE_TYPE                   = PEIM
+  VERSION_STRING                = 1.0
+  PI_SPECIFICATION_VERSION      = 0x0001000A
+  ENTRY_POINT                   = PlatformEarlyInitEntry
+
+[Sources.common]
+  PlatformPchInitPeim.c
+  MemoryCallback.c
+  MemoryPeim.c
+  PlatformEarlyInit.c
+  PlatformEarlyInit.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+  IntelFrameworkModulePkg/IntelFrameworkModulePkg.dec
+
+[LibraryClasses]
+  PeimEntryPoint
+  DebugLib
+  HobLib
+  IoLib
+  MultiPlatformLib
+  PcdLib
+  ReportStatusCodeLib
+  PchPlatformLib
+  TimerLib
+
+#
+# [Hob]
+#  RESOURCE_DESCRIPTOR              ## PRODUCES
+#
+
+[Ppis]
+  ## CONSUMES
+  gEfiPeiStallPpiGuid
+
+  ## NOTIFY
+  gEfiPeiMemoryDiscoveredPpiGuid
+
+  ## CONSUMES
+  gEfiPeiReadOnlyVariable2PpiGuid
+
+  ## NOTIFY
+  gEfiEndOfPeiSignalPpiGuid
+
+  ## PRODUCES
+  gEfiFindFvPpiGuid
+
+[Guids]
+
+  ## PRODUCES  ## HOB
+  gEfiMemoryTypeInformationGuid
+
+[Pcd]
+  ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+
+  ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashAreaBaseAddress
+
+  ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashAreaSize
+
+  ## CONSUMES
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdPlatformInfo
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdSystemConfiguration
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+
+[Depex]
+  gEfiPeiReadOnlyVariable2PpiGuid AND gEfiPeiStallPpiGuid
+

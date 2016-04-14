@@ -1,0 +1,57 @@
+## @file
+#  SMM based Firmware Volume Block Dxe Driver
+#
+#  This driver provides the Firmware Volume Block (FVB) services based on SMM
+#  FVB module and install FVB protocol.
+#
+#  Copyright (c) 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.    
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010018
+  BASE_NAME                      = FvbSmmDxe
+  FILE_GUID                      = BEB88806-1143-4156-A2AF-4CA781EA313B
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = FvbSmmDxeInitialize
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources]
+  FvbSmmDxe.c
+  FvbSmmDxe.h
+  FvbSmmCommon.h
+
+[Packages]
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  UefiBootServicesTableLib
+  DebugLib
+  DxeServicesTableLib
+  UefiDriverEntryPoint
+  PcdLib
+
+[Protocols]
+  gEfiFirmwareVolumeBlockProtocolGuid           ## PRODUCES
+  gEfiSmmCommunicationProtocolGuid              ## CONSUMES
+  gEfiSmmFirmwareVolumeBlockProtocolGuid        ## CONSUMES  # GUID value is also used with SMM Communication Protocol to invoke an SMI Handler
+
+[Depex]
+  gEfiSmmCommunicationProtocolGuid
+

@@ -1,0 +1,58 @@
+## @file
+#  Component description file for PciPlatform module
+#
+#  Get Pci Rom from platform specific location for specific PCI device.
+#
+#  Copyright (c) 2003 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[defines]
+  INF_VERSION          = 0x00010005
+  BASE_NAME            = PciPlatform
+  FILE_GUID            = 2BD21AC8-7FF5-456A-BE55-83F9F2DAE6E0
+  MODULE_TYPE          = DXE_DRIVER
+  VERSION_STRING       = 1.0
+  ENTRY_POINT          = PciPlatformDriverEntry
+
+[sources.common]
+  PciPlatform.c
+  PciPlatform.h
+
+[Protocols]
+  gEfiPciPlatformProtocolGuid         ## PRODUCES
+  gEfiPciRootBridgeIoProtocolGuid     ## CONSUMES
+  gEfiPciIoProtocolGuid               ## CONSUMES
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+
+[LibraryClasses]
+  HobLib
+  UefiDriverEntryPoint
+  BaseLib
+  BaseMemoryLib
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  DxeServicesTableLib
+
+[Pcd]
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdSystemConfiguration
+
+[Depex]
+  gEfiVariableArchProtocolGuid AND
+  gEfiVariableWriteArchProtocolGuid
+

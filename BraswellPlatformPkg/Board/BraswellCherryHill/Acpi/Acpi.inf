@@ -1,0 +1,58 @@
+## @file
+#  ACPI module for Intel(R) Atom(TM) x5 Processor Series.
+#
+#  This module will get ACPI table from FV.
+#
+#  Copyright (c) 2013 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.    
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = AcpiBraswellCherryHill
+  FILE_GUID                      = 3F79C905-4309-4e1a-920D-95897FD3D190
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InstallAcpiBraswellCherryHill
+
+[Sources.common]
+  Acpi.c
+  Ssdt.asl
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  BaseLib
+  DebugLib
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  BaseMemoryLib
+  MemoryAllocationLib
+
+[Pcd]
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdPlatformInfo            ## CONSUMES
+
+[Protocols]
+  gEfiAcpiTableProtocolGuid                                  ## CONSUMES
+  gEfiFirmwareVolume2ProtocolGuid                            ## CONSUMES
+
+[Depex]
+  gEfiAcpiTableProtocolGuid AND
+  gEfiFirmwareVolume2ProtocolGuid AND
+  gEfiMpServiceProtocolGuid AND
+  gEfiPciRootBridgeIoProtocolGuid AND
+  gEfiVariableArchProtocolGuid AND
+  gEfiVariableWriteArchProtocolGuid
+

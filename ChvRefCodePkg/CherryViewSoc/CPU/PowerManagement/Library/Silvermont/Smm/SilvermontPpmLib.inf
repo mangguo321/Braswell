@@ -1,0 +1,32 @@
+## @file
+#  Intel(R) Atom(TM) x5 Processor Series Power Management Library
+#
+#  Provides library services of silvermont processsor power management.
+#
+#  Copyright (c) 1999 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SilvermontPpmLib2
+  FILE_GUID                      = 710B8CFF-42A5-40c2-A838-4E036E740D5F
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SilvermontPpmLib
+
+[sources.common]
+  SilvermontPpmLib.c
+  SilvermontPpmLib.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec  

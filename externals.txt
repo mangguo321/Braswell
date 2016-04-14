@@ -1,0 +1,20 @@
+#algin with BP Core 1.3.1.0 Release
+BaseTools                     https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Tools/BaseTools 
+Conf                          https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Firmware/R9/Conf 
+MdePkg                        https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Firmware/R9/MdePkg 
+MdeModulePkg                  https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Firmware/R9/MdeModulePkg 
+IntelFrameworkPkg             https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Firmware/R9/IntelFrameworkPkg 
+IntelFrameworkModulePkg       https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Firmware/R9/IntelFrameworkModulePkg 
+PcAtChipsetPkg                https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Firmware/R9/PcAtChipsetPkg 
+UefiCpuPkg                    https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Firmware/R9/UefiCpuPkg 
+SourceLevelDebugPkg           https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Firmware/R9/SourceLevelDebugPkg 
+CryptoPkg                     https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Firmware/R9/CryptoPkg 
+NetworkPkg                    https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Firmware/R9/NetworkPkg 
+SecurityPkg                   https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Firmware/R9/SecurityPkg 
+FatPkg                        https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Firmware/R9/FatPkg
+ShellBinPkg                   https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Firmware/R9/ShellBinPkg
+ShellPkg                      https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Firmware/R9/ShellPkg 
+IntelFspPkg                   https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Firmware/R9/IntelFspPkg 
+IntelFspWrapperPkg            https://ssvn.intel.com/ssg/csd/tiano/tianoad/trunk/OC/Firmware/R9/IntelFspWrapperPkg 
+ChvFspBinPkg                  https://ssvn.intel.com:80/ssg/csd/tiano/tianoad/trunk/OC/Firmware/Braswell/ChvFspBinPkg
+

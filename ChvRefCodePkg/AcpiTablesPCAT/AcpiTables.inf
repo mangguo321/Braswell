@@ -1,0 +1,44 @@
+## @file
+#  Platform Acpi Table Module
+#
+#  This module contains the ACPI tables that can be published for use by an
+#  ACPI aware OS.  This module only contains the data and must be manipulated by
+#  a separate driver to be functional.
+#
+#  Copyright (c) 1999 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = AcpiTables
+  FILE_GUID                      = 594C5339-3DE5-4ccc-8886-9C627DD9F62B
+  MODULE_TYPE                    = USER_DEFINED
+  VERSION_STRING                 = 1.0
+  EDK_RELEASE_VERSION            = 0x00020000
+  EFI_SPECIFICATION_VERSION      = 0x00020000
+
+[sources.common]
+  Csrt.aslc
+  Dsdt.asl
+  Facs/Facs.aslc
+  Facp/Facp.aslc
+  SampleCode/Madt/Madt30.aslc
+  SampleCode/Mcfg/Mcfg.aslc
+  #Hpet/Hpet.aslc
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  
+[Guids]
+  gEfiAcpiTableStorageGuid                   ## PRODUCES           ## FV
+  

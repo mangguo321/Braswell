@@ -1,0 +1,69 @@
+## @file
+#  Component description file for SIO791 module.
+#
+#  This module provides support for Wpce791 Super IO.
+#
+#  Copyright (c) 1999 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SIO791
+  FILE_GUID                      = FAB62520-454C-4A0C-B5F2-BFF4F2401F3A
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = LpcDriverEntryPoint
+
+[Sources]
+  LpcIsaAcpi.h
+  LpcSio.h
+  LpcDriver.h
+  LpcIsaAcpi.c
+  LpcSio.c
+  LpcDriver.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  IntelFrameworkModulePkg/IntelFrameworkModulePkg.dec
+  PcAtChipsetPkg/PcAtChipsetPkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  DevicePathLib
+  UefiLib
+  S3BootScriptLib
+  DebugLib
+  IoLib
+  
+[Protocols]
+  ## CONSUMES
+  gEfiPciIoProtocolGuid
+
+  ## PRODUCES
+  gEfiIsaAcpiProtocolGuid
+
+  ## SOMETIMES_CONSUMES
+  gEfiLpcWpce791PolicyProtocolGuid
+  
+[Pcd]
+  gPlatformModuleTokenSpaceGuid.PcdWpce791UartSerialIoEnable  ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress           ## CONSUMES
+  
+[Guids]
+
+[Depex]
+  TRUE
+

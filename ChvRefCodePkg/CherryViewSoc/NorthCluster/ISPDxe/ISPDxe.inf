@@ -1,0 +1,50 @@
+## @file
+#  ISP Dxe Module 
+#
+#  This module will initialize ISP device and update memory bar 
+#  information in acpi table.
+#
+#  Copyright (c) 1999 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = ISPDxe
+  FILE_GUID                      = 1502A77D-2FC0-4A14-AA83-838217560CC5
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = ISPDxeEntryPoint
+
+[sources.common]
+  ISPDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  DxeServicesTableLib
+  UefiLib
+  IoLib
+  DebugLib
+  DxeServicesTableLib
+
+[Protocols]
+  ## CONSUMES
+  gEfiGlobalNvsAreaProtocolGuid
+
+[Depex]
+  gEfiGlobalNvsAreaProtocolGuid
+

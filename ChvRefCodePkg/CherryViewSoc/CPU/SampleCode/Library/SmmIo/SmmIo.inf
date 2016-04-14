@@ -1,0 +1,38 @@
+## @file
+#  Component description file.
+#
+#  Copyright (c) 1999 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SmmIoLib2
+  FILE_GUID                      =  8B7B3CFB-5592-4a9d-8FEE-EE0BA9CF2623
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SmmIoLib
+  
+[sources]
+  SmmIo.c
+  SmmPciIo.c
+
+[Packages]  
+  MdePkg/MdePkg.dec  
+  ChvRefCodePkg/ChvRefCodePkg.dec  
+
+[LibraryClasses]
+  PcdLib
+  DebugLib
+  IoLib
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress

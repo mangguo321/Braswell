@@ -1,0 +1,48 @@
+## @file
+#  Smm Control module
+#
+#  It privides SMI create, trigger and clear mechanism.
+#
+#  Copyright (c) 2012 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PeiSmmControl
+  FILE_GUID                      = 9A9E7CF3-38F1-44F8-9057-A08B895A4620
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SmmControlPeiDriverEntryInit
+
+[Sources]
+  SmmControlDriver.h
+  SmmControlDriver.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+
+[LibraryClasses]
+  PeimEntryPoint
+  IoLib
+  DebugLib
+
+[Ppis]
+  gPeiSmmControlPpiGuid              ## PRODUCES
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress     ## CONSUMES
+  
+[Depex]
+  TRUE
+  

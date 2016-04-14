@@ -1,0 +1,115 @@
+## @file
+#  Component description file for the PolicyInit DXE driver.
+#
+#  Copyright (c) 2014 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+################################################################################
+#
+# Defines Section - statements that will be processed to create a Makefile.
+#
+################################################################################
+[Defines]
+  INF_VERSION          = 0x00010005
+  BASE_NAME            = PolicyInitDxe
+  FILE_GUID            = 8AEEB956-93C0-49d9-BF82-FC349CAB57B9
+  MODULE_TYPE          = DXE_DRIVER
+  VERSION_STRING       = 1.0
+  ENTRY_POINT          = PolicyInitDxeEntryPoint
+
+[Sources]
+  ChvPolicyInitDxe.c
+  ChvPolicyInitDxe.h
+  PchPolicyInitDxe.c
+  PchPolicyInitDxe.h
+  PolicyInitDxe.c
+  PolicyInitDxe.h
+  PlatformGopPolicy.c
+  PpmPolicy.c
+  PpmPolicy.h
+
+################################################################################
+#
+# Package Dependency Section - list of Package files that are required for
+#                              this module.
+#
+################################################################################
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+
+################################################################################
+#
+# Library Class Section - list of Library Classes that are required for
+#                         this module.
+#
+################################################################################
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  DxeServicesTableLib
+  IoLib
+  HobLib
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+  UefiRuntimeServicesTableLib
+  ReportStatusCodeLib
+  PchPlatformLib
+
+################################################################################
+#
+# Protocol C Name Section - list of Protocol and Protocol Notify C Names
+#                           that this module uses or produces.
+#
+################################################################################
+[Pcd]
+  ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+
+  ## SOMETIMES_PRODUCES
+  gEfiCHVTokenSpaceGuid.PcdBmpImageGuid
+
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdPlatformInfo
+
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdSystemConfiguration
+
+  gPlatformModuleTokenSpaceGuid.PcdCustomizedVbtFile ## CONSUMES
+
+[Protocols]
+  ## PRODUCES
+  gEfiPlatformCpuProtocolGuid
+
+  ## PRODUCES
+  gDxeChvPlatformPolicyGuid
+
+  ## PRODUCES
+  gDxePchPlatformPolicyProtocolGuid
+
+  ## CONSUMES 
+  gEfiFirmwareVolume2ProtocolGuid
+
+  ## CONSUMES 
+  gEfiMpServiceProtocolGuid
+
+  ## PRODUCES
+  gPpmPlatformPolicyProtocolGuid
+
+  ## PRODUCES
+  gPlatformGOPPolicyGuid
+
+[Depex]
+  gEfiVariableArchProtocolGuid
+

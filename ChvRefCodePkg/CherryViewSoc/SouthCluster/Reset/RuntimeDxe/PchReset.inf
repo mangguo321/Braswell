@@ -1,0 +1,66 @@
+## @file
+#  Produces system Reset arch protocol
+#
+#  Provides the ability for the system firmware to reset the platform.
+#
+#  Copyright (c) 2012 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PchReset
+  FILE_GUID                      = 1B660835-1742-40B3-A6E7-6C3AE220BA10
+  MODULE_TYPE                    = DXE_RUNTIME_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InitializePchReset
+
+[sources.common]
+  PchReset.c
+  PchReset.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  MemoryAllocationLib
+  IoLib
+  DebugLib
+  UefiRuntimeLib
+  PcdLib
+  BaseLib
+  PchPlatformLib
+
+[Guids]
+  ## SOMETIMES_CONSUMES   ## Variable:L"CapsuleUpdateData"
+  gEfiCapsuleVendorGuid
+
+  ## CONSUMES  ## Event
+  gEfiEventVirtualAddressChangeGuid
+
+[Protocols]
+  ## PRODUCES
+  gEfiResetArchProtocolGuid
+
+  ## PRODUCES
+  gEfiPchExtendedResetProtocolGuid
+
+  ## SOMETIMES_CONSUMES
+  gDxePchPlatformPolicyProtocolGuid
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress  ## SOMETIMES_CONSUMES
+
+[Depex]
+  TRUE
+

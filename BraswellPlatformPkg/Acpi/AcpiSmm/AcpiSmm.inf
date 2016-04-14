@@ -1,0 +1,103 @@
+## @file
+#  Component description file for SMM Platform handler module
+#
+#  Provides platform specific handlers for different SMI events.  The module will
+#  register handlers for sleep state transitions as well as other software SMI
+#  events.
+#
+#  Copyright (c) 1999 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PlatformSmm
+  FILE_GUID                      = 88802B98-ADFE-4414-A695-FB35CA8D11F2
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InitializePlatformSmm
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources]
+  S3Save.c
+  Platform.c
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  DebugLib
+  IoLib
+  BaseLib
+  BaseMemoryLib
+  DevicePathLib
+  HobLib
+  S3BootScriptLib
+  StallSmmLib
+  PchPlatformLib
+  ReportStatusCodeLib
+
+[Guids]
+
+  ## SOMETIMES_CONSUMES    ## Variable:L"AcpiGlobalVariable"
+  gEfiAcpiVariableCompatiblityGuid
+
+  ## SOMETIMES_CONSUMES
+  gEfiAcpiVariableGuid
+
+[Protocols]
+  ## CONSUMES
+  gEfiSmmIchnDispatchProtocolGuid
+
+  ## CONSUMES
+  gEfiGlobalNvsAreaProtocolGuid
+
+  ## CONSUMES
+  gEfiSmmSwDispatch2ProtocolGuid
+
+  ## SOMETIMES_CONSUMES
+  gEfiSmmPowerButtonDispatch2ProtocolGuid
+
+  ## CONSUMES
+  gEfiSmmSxDispatch2ProtocolGuid
+
+  ## CONSUMES
+  gEfiSmmVariableProtocolGuid
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+  IntelFrameworkModulePkg/IntelFrameworkModulePkg.dec
+
+[Pcd]
+  ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  gEfiMdeModulePkgTokenSpaceGuid.PcdProgressCodeS3SuspendStart            ## CONSUMES
+  gEfiIntelFrameworkModulePkgTokenSpaceGuid.PcdS3AcpiReservedMemorySize   ## SOMETIMES_CONSUMES
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdSystemConfiguration
+
+[Depex]
+  gEfiSmmBase2ProtocolGuid                 AND
+  gEfiSmmAccess2ProtocolGuid               AND
+  gEfiSmmPowerButtonDispatch2ProtocolGuid  AND
+  gEfiSmmSxDispatch2ProtocolGuid           AND
+  gEfiSmmIchnDispatchProtocolGuid          AND
+  gEfiSmmSwDispatch2ProtocolGuid           AND
+  gEfiVariableArchProtocolGuid            
+

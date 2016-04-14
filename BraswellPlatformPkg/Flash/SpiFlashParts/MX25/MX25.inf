@@ -1,0 +1,41 @@
+## @file
+#  MACRONIX* MX25*** family SPI flash support
+#
+#  Copyright (c) 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010018
+  BASE_NAME                      = MX25XXX
+  FILE_GUID                      = FB7900FB-BC92-4a34-BFB6-8CC0E63B52FC
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SpiFlashPart
+
+[Sources]
+  MX25.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  BaseLib
+  UefiBootServicesTableLib
+
+[Protocols]
+  gSpiFlashPartProtocolGuid     ## PRODUCES
+
+[Depex]
+  TRUE
+

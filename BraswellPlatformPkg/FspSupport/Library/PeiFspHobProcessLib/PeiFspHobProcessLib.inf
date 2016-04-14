@@ -1,0 +1,123 @@
+## @file
+#
+#  Copyright (c) 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+################################################################################
+#
+# Defines Section - statements that will be processed to create a Makefile.
+#
+################################################################################
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PeiFspHobProcessLib
+  FILE_GUID                      = C7B7070B-E5A8-4b86-9110-BDCA1095F496
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = FspHobProcessLib
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+################################################################################
+#
+# Sources Section - list of files that are required for the build to succeed.
+#
+################################################################################
+
+[Sources]
+  FspHobProcessLib.c
+
+
+################################################################################
+#
+# Package Dependency Section - list of Package files that are required for
+#                              this module.
+#
+################################################################################
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  IntelFrameworkModulePkg/IntelFrameworkModulePkg.dec
+  IntelFspPkg/IntelFspPkg.dec
+  IntelFspWrapperPkg/IntelFspWrapperPkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  ChvFspBinPkg/ChvFspBinPkg.dec
+
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  HobLib
+  DebugLib
+  FspPlatformInfoLib
+  PeiServicesLib
+  PeiServicesTablePointerLib
+
+[Pcd]
+  ## CONSUMES
+  gFspWrapperTokenSpaceGuid.PcdPeiMinMemSize
+
+  ## CONSUMES
+  gFspWrapperTokenSpaceGuid.PcdPeiRecoveryMinMemSize
+
+[Guids]
+  ## PRODUCES ## HOB
+  gFspReservedMemoryResourceHobGuid
+
+  ## SOMETIMES_CONSUMES
+  ## PRODUCES ## HOB
+  gEfiMemoryTypeInformationGuid
+  
+  ## PRODUCES ## HOB
+  gEfiSmmPeiSmramMemoryReserveGuid
+
+  ## SOMETIMES_CONSUMES ## HOB
+  ## PRODUCES ## HOB
+  gEfiPlatformCpuInfoGuid
+
+  ## SOMETIMES_CONSUMES ## Guid
+  gEfiVariableGuid
+
+  ## PRODUCES ## HOB
+  gEfiAcpiVariableGuid
+
+  ## SOMETIMES_CONSUMES ## Guid
+  gFspBootLoaderTemporaryMemoryGuid
+
+  ## SOMETIMES_CONSUMES ## Guid
+  gFspNonVolatileStorageHobGuid
+  
+  ## SOMETIMES_CONSUMES ## Guid
+  gEfiGraphicsInfoHobGuid
+
+  ## SOMETIMES_CONSUMES ## Guid
+  gFspSmbiosMemoryInfoHobGuid
+  
+  ## SOMETIMES_CONSUMES ## Guid
+  gEfiPlatformInfoGuid
+  ## SOMETIMES_CONSUMES ## Guid
+  gEfiPlatformInfoGuid
+
+[Ppis]
+  ## SOMETIMES_CONSUMES
+  gPeiCapsulePpiGuid
+
+[Depex]
+  gPeiCapsulePpiGuid
+

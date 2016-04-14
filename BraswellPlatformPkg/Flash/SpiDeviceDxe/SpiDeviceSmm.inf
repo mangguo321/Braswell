@@ -1,0 +1,62 @@
+## @file
+#  SPI Device SMM Driver
+#
+#  Adds platform support to configure the SPI controller with the correct values
+#  to be used when using software sequencing. This driver initializes EMST* F25L016A
+#  SPI flash device and installs gSmmSpiDeviceProtocolGuid protocol.
+#
+#  Copyright (c) 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010018
+  BASE_NAME                      = SpiDeviceSmm
+  FILE_GUID                      = 163774A8-917F-40E5-AB54-B4BFA11D41F9
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+  ENTRY_POINT                    = InitSpiDevice
+  
+[Sources]
+  SpiDeviceSmm.c
+  SpiDevice.c
+  SpiDevice.h
+  
+[Packages]
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  DebugLib
+  SmmServicesTableLib
+  BaseLib
+  MemoryAllocationLib
+
+[Protocols]
+  gEfiSmmSpi2ProtocolGuid                        ## CONSUMES
+  gSmmSpiDeviceProtocolGuid                     ## PRODUCES
+  gSpiFlashPartProtocolGuid                     ## CONSUMES  
+  
+[Pcd]
+  gPlatformModuleTokenSpaceGuid.PcdFlashAreaBaseAddress     ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashAreaSize            ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdBiosImageBase            ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdBiosImageSize            ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase   ## CONSUMES
+
+[Depex]
+  gEfiSmmSpi2ProtocolGuid
+

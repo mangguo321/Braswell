@@ -1,0 +1,50 @@
+## @file
+# The user Entry Point for Application.
+# 
+# The user code starts with this function as the real entry point for the 
+# image goes into a library that calls this function.
+#
+#  Copyright (c) 1999 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = Shell
+  FILE_GUID                      = C57AD6B7-0515-40A8-9D21-551652854E37 
+  MODULE_TYPE                    = UEFI_APPLICATION
+  VERSION_STRING                 = 1.0
+
+[Binaries.Ia32]
+  PE32|Shell.efi
+
+[Binaries.X64]
+  PE32|ShellX64.efi
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ShellPkg/ShellPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[Protocols]
+  gEfiShellProtocolGuid                                   # ALWAYS_PRODUCES
+                                                          # SOMETIMES_CONSUMES
+  gEfiShellParametersProtocolGuid                         # ALWAYS_PRODUCES
+                                                          # SOMETIMES_CONSUMES
+  gEfiSimpleTextInputExProtocolGuid                       # ALWAYS_CONSUMES
+  gEfiSimpleTextInProtocolGuid                            # ALWAYS_CONSUMES
+  gEfiSimpleTextOutProtocolGuid                           # ALWAYS_CONSUMES
+  gEfiSimpleFileSystemProtocolGuid                        # ALWAYS_CONSUMES
+  gEfiLoadedImageProtocolGuid                             # ALWAYS_CONSUMES
+  gEfiComponentName2ProtocolGuid                          # ALWAYS_CONSUMES
+  gEfiUnicodeCollation2ProtocolGuid                       # ALWAYS_CONSUMES
+  gEfiDevicePathProtocolGuid                              # ALWAYS_CONSUMES
+  

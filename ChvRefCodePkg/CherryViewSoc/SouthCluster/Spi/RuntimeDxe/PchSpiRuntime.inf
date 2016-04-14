@@ -1,0 +1,73 @@
+## @file
+#  Provides SPI protocol based on SPI Host Controller
+#
+#  This module installs SPI protocol to provide PCH SPI commands 
+#  interface from the host controller.
+#
+#  Copyright (c) 2012 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PchSpiRuntime
+  FILE_GUID                      = 79F941AE-B120-4771-85E8-BE0BC391ECBA
+  MODULE_TYPE                    = DXE_RUNTIME_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InstallPchSpi
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 IPF EBC
+#
+#  VIRTUAL_ADDRESS_MAP_CALLBACK  = PchSpiVirtualAddressChangeEvent
+#
+
+[Sources]
+  PchSpi.h
+  PchSpi.c
+  ../Common/SpiCommon.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+
+[LibraryClasses]
+  IoLib
+  PciLib
+  UefiLib
+  DebugLib
+  S3BootScriptLib
+  PchPlatformLib
+  DxeServicesTableLib
+  MemoryAllocationLib
+  UefiDriverEntryPoint
+  PchDxeRuntimePciLibPciExpress
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  UefiRuntimeLib
+
+[Guids]
+  ## CONSUMES ## Event
+  gEfiEventVirtualAddressChangeGuid
+
+[Protocols]
+  ## PRODUCES 
+  gEfiSpiProtocolGuid
+
+[Pcd]
+  ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+
+[Depex]
+  TRUE
+

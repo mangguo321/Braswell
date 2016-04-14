@@ -1,0 +1,107 @@
+## @file
+#  FspBinary Firmware Support Package Binary
+# 
+#  Copyright (c) 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION               = 0x00010005
+  BASE_NAME                 = FspBinary
+  FILE_GUID                 = 1f12ccde-56c5-11e5-8532-c4346b6de803
+  MODULE_TYPE               = USER_DEFINED
+  VERSION_STRING            = 1.0
+
+[Packages]
+  IntelFspPkg/IntelFspPkg.dec
+  IntelFspWrapperPkg/IntelFspWrapperPkg.dec
+  ChvFspBinPkg/ChvFspBinPkg.dec
+
+[Binaries]
+  FV|BSWFSP.fd
+
+[Guids]
+  gFspHeaderFileGuid       ## PRODUCES ## GUID
+
+[PatchPcd]
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdTurboMode|0x01|0x0002A510
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdPnpSettings|0x03|0x0002A511
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdSdDetectChk|0x01|0x0002A512
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdSdcardMode|0x01|0x0002A4C0
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableHsuart0|0x00|0x0002A4C1
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableHsuart1|0x01|0x0002A4C2
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableAzalia|0x00|0x0002A4C3
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableSata|0x01|0x0002A4C8
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableXhci|0x01|0x0002A4C9
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableLpe|0x01|0x0002A4CA
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableDma0|0x01|0x0002A4CB
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableDma1|0x01|0x0002A4CC
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableI2C0|0x01|0x0002A4CD
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableI2C1|0x01|0x0002A4CE
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableI2C2|0x01|0x0002A4CF
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableI2C3|0x01|0x0002A4D0
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableI2C4|0x01|0x0002A4D1
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableI2C5|0x01|0x0002A4D2
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableI2C6|0x01|0x0002A4D3
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEmmcMode|0x01|0x0002A4E3
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdSataInterfaceSpeed|0x03|0x0002A4FF
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.ISPEnable|0x01|0x0002A50E
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.ISPPciDevConfig|0x02|0x0002A50F
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdMrcInitTsegSize|0x0004|0x0002A3E0
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdMrcInitMmioSize|0x0800|0x0002A3E2
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdMrcInitSpdAddr1|0xA0|0x0002A3E4
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdMrcInitSpdAddr2|0xA2|0x0002A3E5
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdIgdDvmt50PreAlloc|0x01|0x0002A3EC
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdApertureSize|0x02|0x0002A3ED
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdGttSize|0x01|0x0002A3EE
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdLegacySegDecode|0x00|0x0002A3EF
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdDvfsEnable|0x01|0x0002A3F0
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdMemoryTypeEnable|0x00|0x0002A3F1
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdCaMirrorEn|0x00|0x0002A3F2
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PMICI2CBus|0x00|0x0002A50D
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdImageRevision|0x00048800|0x000000AC
+

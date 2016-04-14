@@ -1,0 +1,89 @@
+## @file
+#  SystemAgent Initialization Dxe Module
+#
+#  This driver initializes Intel(R) Atom(TM) x5 Processor Series North Cluster.
+#
+#  Copyright (c) 1999 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = ChvInitDxe
+  FILE_GUID                      = 40C6CC48-CA9C-4BEF-9F9A-08ADA0619087
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = ChvInitEntryPoint
+
+[Sources]
+  ChvInit.h
+  ChvInit.c
+  IgdOpRegion.h
+  IgdOpRegion.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  
+[LibraryClasses]
+  UefiDriverEntryPoint
+  DebugLib
+  UefiBootServicesTableLib
+  S3BootScriptLib
+  DxeServicesTableLib
+  IoLib
+  PchPlatformLib
+  PcdLib
+  TimerLib
+
+[Protocols]
+  ## CONSUMES
+  gDxeChvPlatformPolicyGuid
+
+  ## NOTIFY
+  gEfiDxeSmmReadyToLockProtocolGuid
+
+  ## PRODUCES
+  gIgdOpRegionProtocolGuid
+
+  ## SOMETIMES_CONSUMES
+  gGopComponentName2ProtocolGuid
+
+  ## CONSUMES
+  gEfiGlobalNvsAreaProtocolGuid
+
+  ## CONSUMES
+  gEfiPciIoProtocolGuid
+
+  ## CONSUMES
+  gEfiFirmwareVolume2ProtocolGuid
+
+  ## CONSUMES
+  gEfiCpuIo2ProtocolGuid
+
+  ## PRODUCES
+  gEndOfSaInitDxeProtocolGuid
+
+  ## SOMETIMES_CONSUMES
+  gPlatformGOPPolicyGuid
+  
+[Pcd]  
+  ## SOMETIMES_CONSUMES
+  gEfiCHVTokenSpaceGuid.PcdBmpImageGuid
+
+[Depex]
+  gDxeChvPlatformPolicyGuid           AND
+  gEfiPciRootBridgeIoProtocolGuid     AND
+  gEfiCpuIo2ProtocolGuid              AND 
+  gEfiGlobalNvsAreaProtocolGuid       AND
+  gEfiFirmwareVolume2ProtocolGuid     AND
+  gEfiHiiDatabaseProtocolGuid
+  

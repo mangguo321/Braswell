@@ -1,0 +1,83 @@
+## @file
+#  Initializes PCH hardware.
+#
+#  This module configures and initializes the PCH devices by 
+#  the platform policy.
+#
+#  Copyright (c) 2012 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PchInitDxe
+  FILE_GUID                      = 48D30263-7D25-4AD9-855D-61FB87F2C257
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = PchInitEntryPoint
+
+[Sources]
+  PchInit.h
+  PchInit.c
+  PchIsh.c
+  PchLpe.c
+  PchLpss.c
+  PchSata.c
+  PchScc.c
+  PchDebugDump.c
+  PchUsbOtg.c
+  ../Common/PchUsbCommon.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+
+[LibraryClasses]
+  UefiBootServicesTableLib
+  DxeServicesTableLib
+  MemoryAllocationLib
+  UefiDriverEntryPoint
+  DebugLib
+  PcdLib
+  IoLib
+  PchPlatformLib
+  UefiLib
+  S3BootScriptLib
+  AslUpdateLib
+  TimerLib
+
+[Protocols]
+  ## CONSUMES
+  gDxePchPlatformPolicyProtocolGuid
+
+  ## PRODUCES
+  gEfiPchInfoProtocolGuid
+
+  ## SOMETIMES_CONSUMES
+  gEfiAcpiTableProtocolGuid
+
+  ## SOMETIMES_CONSUMES
+  gEfiGlobalNvsAreaProtocolGuid
+
+[Guids]
+  ## CONSUMES  ## Event
+  gEfiEventExitBootServicesGuid
+
+[Pcd]
+  ## SOMETIMES_CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+
+[Depex]
+  gDxePchPlatformPolicyProtocolGuid AND
+  gEfiPciHostBridgeResourceAllocationProtocolGuid AND ## This is to ensure that PCI MMIO and IO resource has been prepared and available for this driver to allocate.
+  gEfiSmmControl2ProtocolGuid       AND
+  gEndOfSaInitDxeProtocolGuid
+  

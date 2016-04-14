@@ -1,0 +1,42 @@
+## @file
+# Realtek* UNDI driver
+#
+# Provides a sample UEFI application that can be added to a firmware image to
+# validate support for launching a UNDI driver.
+#
+# Copyright (c) 2012 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+# This program and the accompanying materials are licensed and made available under
+# the terms and conditions of the BSD License that accompanies this distribution.
+# The full text of the license may be found at
+# http://opensource.org/licenses/bsd-license.php.
+#
+# THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+# WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = RtkUndiDxe
+  FILE_GUID                      = 22DE1691-D65D-456a-993E-A253DD1F308C
+  MODULE_TYPE                    = UEFI_DRIVER
+  VERSION_STRING                 = 1.0
+
+[Binaries.Ia32]
+  PE32|IA32/RtkUndiDxe.efi|*
+
+[Binaries.X64]
+  PE32|X64/RtkUndiDxe.efi|*
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  
+[Protocols]
+  ## PRODUCES
+  ## CONSUMES
+  gEfiDevicePathProtocolGuid
+  gEfiPciIoProtocolGuid          ## CONSUMES
+  gEfiNetworkInterfaceIdentifierProtocolGuid_31 ## BY_START
+  

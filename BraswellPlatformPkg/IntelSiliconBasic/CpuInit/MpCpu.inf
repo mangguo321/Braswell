@@ -1,0 +1,142 @@
+## @file
+#  Component description file for MP Cpu module.
+#
+#  This DXE Driver does processor initialization, configures multi-processor environment,
+#  logs data to SMBIOS table for processor subclass and cache subclass, and installs 
+#  MP Services Protocol.
+#
+#  Copyright (c) 1999 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.                                     
+#
+##
+
+[defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = MpCpu
+  FILE_GUID                      = 4715BA19-6C49-46e0-B5DA-DE7CB9E059E2
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InitializeCpu
+
+
+[sources.ia32]
+  Ia32/CpuAsm.asm
+  Ia32/CpuAsm.s | GCC
+  Ia32/MpProc.asm
+  Ia32/MpProc.s | GCC
+  Ia32/MPFuncs32.asm
+  Ia32/MPFuncs32.s | GCC
+  Ia32/MpCommon32.asm
+  Ia32/MpCommon32.s | GCC
+  Ia32/MemoryOperation.c
+  Ia32/Exception.c
+  Ia32/MpCpu.c
+  Ia32/InitializeFpu.s | GCC
+
+[sources.x64]
+  x64/Cpu.asm
+  x64/CpuAsm.asm
+  x64/Exception.c
+  x64/MemoryOperation.c
+  x64/MpCpu.c
+  x64/MpFuncs.asm
+  x64/CpuInitDxeGccDummy.c | GCC
+
+[sources]
+  Cpu.c
+  CpuDxe.h
+  MemoryAttribute.c
+  Microcode.c
+  MpCommon.c
+  MpService.c
+  MtrrSync.c
+  MiscFuncs.c
+
+[Protocols]
+  ## CONSUMES
+  gEfiMetronomeArchProtocolGuid
+
+  ## CONSUMES
+  ## PRODUCES
+  gEfiMpServiceProtocolGuid
+
+  ## CONSUMES
+  ## PRODUCES
+  gEfiCpuArchProtocolGuid
+
+  ## NOTIFY
+  gExitPmAuthProtocolGuid
+
+  ## CONSUMES
+  gEfiDxeSmmReadyToLockProtocolGuid
+
+  ## CONSUMES
+  gEfiSmmAccess2ProtocolGuid
+
+  ## CONSUMES
+  gEfiSmmControl2ProtocolGuid
+
+[Guids]
+  ## SOMETIMES_CONSUMES  ## HOB
+  gEfiHtBistHobGuid
+
+  ## PRODUCES ## GUID
+  gEfiStatusCodeSpecificDataGuid
+
+  ## CONSUMES  ## Event
+  gEfiEndOfDxeEventGroupGuid
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IntelFrameworkModulePkg/IntelFrameworkModulePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  ReportStatusCodeLib
+  BaseLib
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  UefiLib
+  MemoryAllocationLib
+  DxeServicesTableLib
+  HobLib
+  UefiDriverEntryPoint
+  PcdLib
+  IoLib
+  
+[Pcd.common]
+  ## SOMETIMES_CONSUMES
+  gIntelSiBasicPkgTokenSpaceGuid.CpuNumberOfThreadsPerCore
+
+  ## SOMETIMES_CONSUMES
+  gIntelSiBasicPkgTokenSpaceGuid.CpuNumberOfCoresPerDie
+
+  ## SOMETIMES_CONSUMES
+  gIntelSiBasicPkgTokenSpaceGuid.CpuNumberOfDiesPerPackage
+
+  ## SOMETIMES_CONSUMES
+  gIntelSiBasicPkgTokenSpaceGuid.CpuNumberOfPackages
+
+  ## SOMETIMES_CONSUMES
+  gIntelSiBasicPkgTokenSpaceGuid.PcdFlashMicroCodeRegionBase
+
+  ## SOMETIMES_CONSUMES
+  gIntelSiBasicPkgTokenSpaceGuid.PcdFlashMicroCodeRegionSize
+
+  ## SOMETIMES_CONSUMES
+  gIntelSiBasicPkgTokenSpaceGuid.PcdFlashMicroCodeOffset
+
+[Depex]
+  gEfiCpuIo2ProtocolGuid            AND 
+  gEfiVariableArchProtocolGuid      AND 
+  gEfiVariableWriteArchProtocolGuid
+

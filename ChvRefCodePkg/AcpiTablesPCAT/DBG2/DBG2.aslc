@@ -1,0 +1,172 @@
+/** @file
+  The Debug Port Table 2.
+
+  Copyright (c) 1999 - 2015, Intel Corporation. All rights reserved.<BR>
+
+  This program and the accompanying materials
+  are licensed and made available under the terms and conditions of the BSD License
+  which accompanies this distribution.  The full text of the license may be found at
+  http://opensource.org/licenses/bsd-license.php.
+
+  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+
+**/
+
+#include <PiDxe.h>
+#include <IndustryStandard/Acpi50.h>
+#include "AcpiTablePlatform.h"
+
+//
+// ACPI table information used to initialize tables.
+//
+#define EFI_ACPI_OEM_ID           'I','N','T','E','L',' '   // OEMID 6 bytes long
+#define EFI_ACPI_OEM_REVISION     0x00000003
+#define EFI_ACPI_CREATOR_REVISION 0x0100000D
+#define EFI_ACPI_CREATOR_ID       SIGNATURE_32 ('V', 'L', 'V', '2')
+
+//
+// DBG2 Definitions
+//
+#define EFI_ACPI_OEM_DBG2_TABLE_REVISION 0x00000000
+//#define NUMBER_DBG_DEVICE_INFO 2
+#define NUMBER_DBG_DEVICE_INFO 1
+#define DEBUG_DEVICE_INFORMATION_REVISION 0x00
+#define NAMESPACE_STRING_MAX_LENGTH 16
+#define EFI_ACPI_OEM_TABLE_ID_2 SIGNATURE_64('I','N','T','L','D','B','G','2') //Oem table Id for Dbg2
+//
+// Ensure proper structure formats
+//
+#pragma pack (1)
+
+typedef struct _DEBUG_DEVICE_INFORMATION {
+  UINT8  Revision;
+  UINT16 Length;
+  UINT8  NumberOfGenericAddressRegisters;
+  UINT16 NameSpaceStringLength;
+  UINT16 NameSpaceStringOffset;
+  UINT16 OemDataLength;
+  UINT16 OemDataOffset;
+  UINT16 PortType;
+  UINT16 PortSubtype;
+  UINT16 Reserved;
+  UINT16 BaseAddressRegisterOffset;
+  UINT16 AddressSizeOffset;
+  EFI_ACPI_2_0_GENERIC_ADDRESS_STRUCTURE BaseAddressRegister[1];
+  UINT32 AddressSize[1];
+  CHAR8  NamespaceString[NAMESPACE_STRING_MAX_LENGTH];
+  // UINT8 OemData[OemDataLength];
+} DEBUG_DEVICE_INFORMATION;
+
+
+//
+// DBGP structure
+//
+typedef struct {
+  EFI_ACPI_DESCRIPTION_HEADER            Header;
+  UINT32                                 OffsetDbgDeviceInfo;
+  UINT32                                 NumberDbgDeviceInfo;
+  DEBUG_DEVICE_INFORMATION               DbgDeviceInfo[NUMBER_DBG_DEVICE_INFO];
+} EFI_ACPI_DEBUG_PORT_2_TABLE;
+
+#pragma pack ()
+
+//
+// Debug Port Table
+//
+EFI_ACPI_DEBUG_PORT_2_TABLE Dbg2 = {
+  {
+    EFI_ACPI_5_0_DEBUG_PORT_2_TABLE_SIGNATURE,
+    sizeof(EFI_ACPI_DEBUG_PORT_2_TABLE),
+    EFI_ACPI_OEM_DBG2_TABLE_REVISION,
+    0,                          // to make sum of entire table == 0
+    EFI_ACPI_OEM_ID,            // OEMID is a 6 bytes long field
+    EFI_ACPI_OEM_TABLE_ID_2,    // OEM table identification(8 bytes long)
+    EFI_ACPI_OEM_REVISION,      // OEM revision
+    EFI_ACPI_CREATOR_ID,        // ASL compiler vendor ID
+    EFI_ACPI_CREATOR_REVISION   // ASL compiler revision number
+  },
+  OFFSET_OF (EFI_ACPI_DEBUG_PORT_2_TABLE, DbgDeviceInfo),
+  NUMBER_DBG_DEVICE_INFO,
+  {
+    //
+    // COM1
+    //
+    {
+      DEBUG_DEVICE_INFORMATION_REVISION,
+      sizeof(DEBUG_DEVICE_INFORMATION),
+      1,  // NumberOfGenericAddressRegisters
+      NAMESPACE_STRING_MAX_LENGTH,
+      OFFSET_OF (DEBUG_DEVICE_INFORMATION, NamespaceString),
+      0, // OemDataLength
+      0, // OemDataOffset
+      0x08000, // PortType - Serial
+      0x0000,  //  PortSubtype - 16550 compatible
+      0,       // Reserved
+      OFFSET_OF (DEBUG_DEVICE_INFORMATION, BaseAddressRegister),
+      OFFSET_OF (DEBUG_DEVICE_INFORMATION, AddressSize),
+      {
+        0x01,        // Address_Space_ID = 0 System Memory,  1 System IO
+        0x08,        // Register_Bit_Width = 8 bits
+        0x00,        // Register_Bit_offset
+        0x00,        // Reserved
+        0x3F8   // Base addresse of COM1
+      },
+      {
+        sizeof (EFI_ACPI_2_0_GENERIC_ADDRESS_STRUCTURE)
+      },
+      "\\_SB.PCI0.LPCB.IUR3",
+      // OemData
+    },
+
+
+/*
+    //
+    // USB OTG information
+    //
+    {
+      DEBUG_DEVICE_INFORMATION_REVISION,
+      sizeof(DEBUG_DEVICE_INFORMATION),
+      1,  // NumberOfGenericAddressRegisters
+      NAMESPACE_STRING_MAX_LENGTH,
+      OFFSET_OF (DEBUG_DEVICE_INFORMATION, NamespaceString),
+      0, // OemDataLength
+      0, // OemDataOffset
+      0x08002, // PortType - USB
+      0x0005, // PortSubtype - Chipidea USB OTG
+      0, // Reserved
+      OFFSET_OF (DEBUG_DEVICE_INFORMATION, BaseAddressRegister),
+      OFFSET_OF (DEBUG_DEVICE_INFORMATION, AddressSize),
+      {
+        0x00,        // Address_Space_ID = System Memory
+        0x20,        // Register_Bit_Width = 32 bits
+        0x00,        // Register_Bit_offset
+        0x00,        // Reserved
+        0xFFA60000   // Base addresse of SPI port 0
+      },
+      {
+        sizeof (EFI_ACPI_2_0_GENERIC_ADDRESS_STRUCTURE)
+      },
+      "\\_SB.OTG0",
+      // OemData
+    }
+
+*/
+
+
+
+  }
+
+};
+
+VOID*
+ReferenceAcpiTable (
+  VOID
+  )
+{
+  //
+  // Reference the table being generated to prevent the optimizer from
+  // removing the data structure from the executable
+  //
+  return (VOID*)&Dbg2;
+}

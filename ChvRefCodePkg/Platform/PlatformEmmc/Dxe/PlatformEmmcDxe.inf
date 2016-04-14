@@ -1,0 +1,80 @@
+## @file
+#  Component description file for Platform Emmc Info Dxe Driver
+#
+#  Copyright (c) 2013 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+################################################################################
+#
+# Defines Section - statements that will be processed to create a Makefile.
+#
+################################################################################
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PlatformEmmcDxe
+  FILE_GUID                      = B13AFF9D-C66D-46AD-8C23-723482EFC841
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = PlatformEmmcInit
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 EBC
+################################################################################
+#
+# Sources Section - list of files that are required for the build to succeed.
+#
+################################################################################
+[Sources]
+  PlatformEmmcDxe.c
+
+################################################################################
+#
+# Package Dependency Section - list of Package files that are required for
+#                              this module.
+#
+################################################################################
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+
+################################################################################
+#
+# Library Class Section - list of Library Classes that are required for
+#                         this module.
+#
+################################################################################
+[LibraryClasses]
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  DebugLib
+  HobLib
+  PchPlatformLib
+
+################################################################################
+#
+# Protocol C Name Section - list of Protocol and Protocol Notify C Names
+#                           that this module uses or produces.
+#
+################################################################################
+[Protocols] 
+  ## CONSUMES
+  ## NOTIFY
+  gEfiEmmcCardInfoProtocolGuid
+
+  ## CONSUMES
+  gPchSccTuningProtocolGuid
+
+[Depex]
+  TRUE
+

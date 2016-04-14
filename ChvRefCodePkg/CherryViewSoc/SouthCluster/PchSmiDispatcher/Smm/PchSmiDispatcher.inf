@@ -1,0 +1,89 @@
+## @file
+#  SMM Dispatcher Driver
+#
+#  This module provides the ability for system drivers to register and unregister
+#  handlers for specific SMI events.  
+#
+#  Copyright (c) 2012 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PchSmiDispatcher
+  FILE_GUID                      = E7AEA323-2363-45BE-ADF5-2C69A4E5C6FD
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+  ENTRY_POINT                    = InitializePchSmmDispatcher
+
+[sources.common]
+  PchSmm.h
+  PchSmmCore.c
+  PchSmmHelpers.h
+  PchSmmHelpers.c
+  PchxSmmHelpers.h
+  PchxSmmHelpers.c
+  PchSmmUsb.c
+  PchSmmGpi.c
+  PchSmmPowerButton.c
+  PchSmmSw.c
+  PchSmmSx.c
+  PchSmmIchn.c
+  PchSmmPeriodicTimer.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  
+    
+[LibraryClasses]
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  IoLib
+  DebugLib
+  PcdLib
+  BaseLib
+  BaseMemoryLib
+  DevicePathLib
+  PchPlatformLib
+  SmmServicesTableLib
+  ReportStatusCodeLib
+  PerformanceLib
+  DxeServicesTableLib
+  ReportStatusCodeLib
+
+[Protocols]
+  gEfiPciRootBridgeIoProtocolGuid           #CONSUMES
+  gEfiSmmGpiDispatch2ProtocolGuid           #PRODUCES
+  gEfiSmmSxDispatch2ProtocolGuid            #PRODUCES
+  gEfiSmmSwDispatch2ProtocolGuid            #PRODUCES
+  gEfiSmmIchnDispatchProtocolGuid           #PRODUCES
+  gEfiSmmUsbDispatch2ProtocolGuid           #PRODUCES
+  gEfiSmmIchnDispatchExProtocolGuid         #PRODUCES
+  gEfiSmmPowerButtonDispatch2ProtocolGuid   #PRODUCES
+  gEfiSmmPeriodicTimerDispatch2ProtocolGuid #PRODUCES
+  gEfiSmmBase2ProtocolGuid                  #CONSUMES
+  gEfiSmmCpuProtocolGuid                    #CONSUMES
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress       ## SOMETIMES_CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdProgressCodeS3SuspendEnd    ## CONSUMES
+
+[Depex]
+  gEfiSmmCpuProtocolGuid AND
+  gEfiSmmBase2ProtocolGuid AND
+  gEfiPciRootBridgeIoProtocolGuid
+
+[BuildOptions]
+  *_*_X64_CC_FLAGS  = -D X64_BUILD_SUPPORT=1
+  

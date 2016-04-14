@@ -1,0 +1,103 @@
+## @file
+#  ACPI Platform Support Module
+#
+#  Provides the ability for the platform to update the ACPI tables based on the
+#  platforms configuration at boot.
+#
+#  Copyright (c) 1999 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = AcpiPlatform
+  FILE_GUID                      = 14CD4276-38F3-4F25-B9A3-BDA1288A1A52
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = AcpiPlatformEntryPoint
+
+[Sources]
+  AcpiPlatform.c
+
+[Packages]
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  IntelFrameworkModulePkg/IntelFrameworkModulePkg.dec
+  SecurityPkg/SecurityPkg.dec
+
+[LibraryClasses]
+  HobLib
+  UefiRuntimeServicesTableLib
+  UefiDriverEntryPoint
+  BaseMemoryLib
+  DebugLib
+  HobLib
+  IoLib
+  PchPlatformLib
+  BaseLib
+  PciLib
+  MemoryAllocationLib
+  DxeKscLib
+
+[Guids]
+  ## CONSUMES  ## File
+  gEfiAcpiTableStorageGuid
+
+  ## CONSUMES  ## Event
+  gEfiEventExitBootServicesGuid
+
+[Protocols]
+  ## CONSUMES
+  gEfiAcpiTableProtocolGuid
+
+  ## SOMETIMES_CONSUMES
+  gEfiPlatformCpuProtocolGuid
+
+  ## CONSUMES
+  gEfiAcpiS3SaveProtocolGuid
+
+  ## CONSUMES
+  gEfiCpuIo2ProtocolGuid
+
+  ## CONSUMES
+  gEfiFirmwareVolume2ProtocolGuid
+
+  ## CONSUMES
+  gEfiMpServiceProtocolGuid
+
+  ## PRODUCES
+  gEfiGlobalNvsAreaProtocolGuid
+
+[Pcd]
+  ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdPlatformInfo
+
+  ## SOMETIMES_CONSUMES
+  gEfiCHVTokenSpaceGuid.PcdIsVlv2
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdNfcConnection
+
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId
+  
+    ## SOMETIMES_CONSUMES
+  gIntelSiBasicPkgTokenSpaceGuid.PcdMmioBase
+
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdSystemConfiguration
+
+[Depex]
+  gEfiAcpiTableProtocolGuid AND
+  gEfiMpServiceProtocolGuid AND
+  gEfiCpuIo2ProtocolGuid
+

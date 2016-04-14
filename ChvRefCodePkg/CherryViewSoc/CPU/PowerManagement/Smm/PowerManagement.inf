@@ -1,0 +1,75 @@
+## @file
+#  Cpu Power Management Module
+#
+#  Provides support to enable and utilize different power management features in
+#  processors.  This includes both P-States and C-States as well as
+#  thermal protection features.
+#
+#  Copyright (c) 1999 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PowerManagement2
+  FILE_GUID                      = 5BED7FD0-3B2F-4FEF-B323-D650085379B6
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+  ENTRY_POINT                    = InitializePowerManagement
+
+[sources.common]
+  PowerManagement.h
+  PowerManagement.c  
+  Ppm.h
+  PpmInitialization.c
+  PpmRuntime.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec  
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  DebugLib
+  S3BootScriptLib
+  DxeServicesTableLib
+  IoLib
+  PcdLib
+  AslUpdateLib
+  CherryviewPpmLib
+  SilvermontPpmLib
+  MemoryAllocationLib
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress  ## CONSUMES
+
+[Guids]
+  gPowerManagementAcpiTableStorageGuid    ## CONSUMES    ## FV
+
+[Protocols]
+  gEfiSmmBase2ProtocolGuid                ## CONSUMES
+  gEfiSmmSwDispatch2ProtocolGuid          ## CONSUMES
+  gEfiGlobalNvsAreaProtocolGuid           ## CONSUMES
+  gPpmPlatformPolicyProtocolGuid          ## CONSUMES
+  gEfiFirmwareVolume2ProtocolGuid         ## CONSUMES
+  gEfiAcpiSdtProtocolGuid                 ## CONSUMES
+  gEfiAcpiTableProtocolGuid               ## CONSUMES
+
+[Depex]
+  gEfiAcpiSdtProtocolGuid          AND
+  gEfiAcpiTableProtocolGuid        AND
+  gEfiSmmBase2ProtocolGuid         AND
+  gEfiSmmSwDispatch2ProtocolGuid   AND
+  gEfiGlobalNvsAreaProtocolGuid    AND
+  gPpmPlatformPolicyProtocolGuid
+  
+

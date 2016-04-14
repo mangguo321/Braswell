@@ -1,0 +1,196 @@
+## @file
+#  Agent Module to load other modules to deploy SMM Entry Vector for X86 CPU.
+#
+#  Copyright (c) 2009 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PiSmmCpuDxeSmm
+  FILE_GUID                      = E730A001-4DE6-4901-BBE4-7265BE0FCD8D
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x0001000A  
+  ENTRY_POINT                    = PiCpuSmmEntry
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources]
+  PiSmmCpuDxeSmm.c
+  PiSmmCpuDxeSmm.h
+  SmmFeatures.c
+  SmmFeatures.h
+  MpService.c
+  SyncTimer.c
+  CpuS3.c
+  CpuService.c
+  CpuService.h
+  SmmProfile.c
+
+[Sources.Ia32]
+  Ia32/Semaphore.c
+  Ia32/PageTbl.c
+  Ia32/SmmProfileArch.c
+  Ia32/SmmInit.asm      | MSFT
+  Ia32/SmiException.asm | MSFT
+  Ia32/SmiEntry.asm     | MSFT
+  Ia32/MpFuncs.asm      | MSFT
+
+  Ia32/SmmInit.asm      | INTEL
+  Ia32/SmiException.asm | INTEL
+  Ia32/SmiEntry.asm     | INTEL
+  Ia32/MpFuncs.asm      | INTEL
+  
+  Ia32/SmmInit.S      | GCC
+  Ia32/SmiException.S | GCC
+  Ia32/SmiEntry.S     | GCC
+  Ia32/MpFuncs.S      | GCC
+
+[Sources.X64]
+  X64/Semaphore.c
+  X64/PageTbl.c
+  X64/SmmProfileArch.c
+  X64/SmmInit.asm      | MSFT
+  X64/SmiException.asm | MSFT
+  X64/SmiEntry.asm     | MSFT
+  X64/MpFuncs.asm      | MSFT
+
+  X64/SmmInit.asm      | INTEL
+  X64/SmiException.asm | INTEL
+  X64/SmiEntry.asm     | INTEL
+  X64/MpFuncs.asm      | INTEL
+  
+  X64/SmmInit.S      | GCC
+  X64/SmiException.S | GCC
+  X64/SmiEntry.S     | GCC
+  X64/MpFuncs.S      | GCC
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  UefiRuntimeServicesTableLib
+  CacheMaintenanceLib
+  PcdLib
+  DebugLib
+  BaseLib
+  SynchronizationLib
+  BaseMemoryLib
+  MtrrLib
+  SmmLib
+  IoLib
+  TimerLib
+  SmmServicesTableLib
+  MemoryAllocationLib
+  DebugAgentLib
+  HobLib
+  CpuConfigLib
+  PciLib
+  LocalApicLib
+  UefiCpuLib
+  SmmCpuPlatformHookLib
+  UefiLib
+  DxeServicesTableLib
+  CpuLib
+  ReportStatusCodeLib
+
+[Protocols]
+  ## CONSUMES
+  gEfiSmmAccess2ProtocolGuid
+
+  ## CONSUMES
+  gEfiMpServiceProtocolGuid
+
+  ## PRODUCES
+  gEfiSmmConfigurationProtocolGuid
+
+  ## PRODUCES
+  gEfiSmmCpuProtocolGuid
+
+  ## NOTIFY
+  gEfiSmmReadyToLockProtocolGuid
+
+  ## PRODUCES
+  gSmmCpuSyncProtocolGuid
+
+  ## PRODUCES
+  gSmmCpuSync2ProtocolGuid
+
+  ## PRODUCES
+  gEfiSmmCpuServiceProtocolGuid
+
+  ## PRODUCES
+  gEfiSmmCpuSaveStateProtocolGuid
+
+[Guids]
+  ## SOMETIMES_CONSUMES ## HOB
+  gEfiAcpiVariableGuid
+
+  ## SOMETIMES_CONSUMES ## SystemTable
+  gEfiAcpi20TableGuid
+
+  ## SOMETIMES_CONSUMES ## SystemTable
+  gEfiAcpi10TableGuid
+
+[FeaturePcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFrameworkCompatibilitySupport  ## CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmBlockStartupThisAp                ## CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmEnableBspElection                 ## CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmDebug                             ## CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmUncacheCpuSyncData                ## CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuHotPlugSupport                       ## CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmStackGuard                        ## CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmProfileEnable                     ## CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmProfileRingBuffer                 ## CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmFeatureControlMsrLock             ## CONSUMES
+
+[FixedPcd]
+  ## CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuMaxLogicalProcessorNumber
+
+  ## CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmProfileSize
+
+[Pcd]
+  ## SOMETIMES_CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmStackSize
+
+  ## SOMETIMES_CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmApSyncTimeout
+
+  ## SOMETIMES_CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuS3DataAddress
+
+  ## SOMETIMES_PRODUCES
+  gEfiCpuTokenSpaceGuid.PcdCpuHotPlugDataAddress
+
+  ## SOMETIMES_CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmCodeAccessCheckEnable
+
+  ## SOMETIMES_CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmUseDelayIndication
+
+  ## SOMETIMES_CONSUMES
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmUseBlockIndication
+
+[Depex]
+  gEfiMpServiceProtocolGuid
+

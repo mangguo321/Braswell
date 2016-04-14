@@ -1,0 +1,93 @@
+## @file
+#  Firmware volume block service SMM driver.
+#
+#  Provides the ability to perform read, write and erase operations on a Firmware
+#  Volume based on SMM.  Read and write operations are possible at the byte level
+#  but the erase operation can only be done at the block level.
+#
+#  Copyright (c) 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010018
+  BASE_NAME                      = FvbSmm
+  FILE_GUID                      = 564188F4-B6DD-48D0-A33A-F62507FA4FBF
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+  ENTRY_POINT                    = FvbSmmInitialize
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+#  VIRTUAL_ADDRESS_MAP_CALLBACK  =  FvbVirtualddressChangeEvent
+#
+
+[Sources]
+  FvbInfo.c
+  FvbService.h
+  FvbService.c
+  FvbServiceSmm.c
+  FvbSmmCommon.h
+
+[Packages]
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+
+[LibraryClasses]
+  PcdLib
+  MemoryAllocationLib
+  CacheMaintenanceLib
+  IoLib
+  BaseMemoryLib
+  DebugLib
+  BaseLib
+  UefiLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  SmmServicesTableLib
+  HobLib
+
+[Guids]
+  gEfiFirmwareFileSystem2Guid                   ## CONSUMES  ## GUID
+  gEfiSystemNvDataFvGuid                        ## CONSUMES  ## GUID
+
+[Protocols]
+  gEfiDevicePathProtocolGuid                    ## PRODUCES
+  gEfiSmmFirmwareVolumeBlockProtocolGuid        ## PRODUCES  # GUID value is also used to register an SMI Handler
+  gSmmSpiDeviceProtocolGuid                     ## CONSUMES
+
+[Pcd]
+  gPlatformModuleTokenSpaceGuid.PcdFlashAreaBaseAddress    ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvMainBase         ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvMainSize         ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvRecoveryBase     ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvRecoverySize     ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvRecovery2Base    ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvRecovery2Size    ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashPayloadBase        ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashPayloadSize        ## CONSUMES
+
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase   ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize   ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase   ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize   ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashMinEraseSize             ## CONSUMES
+
+[Depex]
+  gSmmSpiDeviceProtocolGuid
+

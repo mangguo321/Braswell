@@ -1,0 +1,158 @@
+## @file
+#  Component description file for PlatformDxe module
+#
+#  Provides the platform specific configuration data to the necessary driver stacks.
+#  It initializes manufacturing and config mode setting, sets up board info, gets 
+#  boot mode. Creates ReadyToBoot Event to run PME init and PR0 enable and lock down
+#  And implements basic platform configuration such as Lan, Azalia, Sata, Smbus, USB,
+#  SIO, PCIE slot, ExI. At same time, it sets S3 boot script here.
+#
+#  Copyright (c) 1999 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = DxePlatform
+  FILE_GUID                      = 4F78CFAB-60A9-4589-84F6-FD2A20A445D9
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+  ENTRY_POINT                    = PlatformDxeEntryPoint
+
+[sources.common]
+  Platform.c
+  ChvPolicyInitDxe.c
+  ChvPolicyInitDxe.h
+  PchPolicyInitDxe.c
+  PchPolicyInitDxe.h
+  PolicyInitDxe.c
+  PolicyInitDxe.h
+  PlatformGopPolicy.c
+  PpmPolicy.c
+  PpmPolicy.h
+  SaveMemoryConfig.c
+  LpssSccS3Save.c
+  
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  IntelFrameworkModulePkg/IntelFrameworkModulePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  SecurityPkg/SecurityPkg.dec
+  CryptoPkg/CryptoPkg.dec
+  IntelFspPkg/IntelFspPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiRuntimeServicesTableLib
+  DxeServicesTableLib
+  PchPlatformLib
+  DebugLib
+  HiiLib
+  PrintLib
+  UefiLib
+  S3BootScriptLib
+  ReportStatusCodeLib
+  EfiRegTableLib
+  BiosIdLib
+  PcdLib
+  GpioLib
+  TimerLib
+
+[Guids]
+  ## CONSUMES  ## Event
+  gEfiEventExitBootServicesGuid
+  ## SOMETIMES_CONSUMES
+  gEfiPlatformInfoGuid
+  ## SOMETIMES_CONSUMES
+  gEfiChvVariableGuid
+  ## SOMETIMES_CONSUMES
+  gFspNonVolatileStorageHobGuid
+
+[Protocols]
+  gEfiPciRootBridgeIoProtocolGuid       ## CONSUMES
+  gEfiVariableArchProtocolGuid          ## CONSUMES
+  gEfiVariableWriteArchProtocolGuid     ## CONSUMES
+  gEfiCpuIo2ProtocolGuid                ## CONSUMES
+  gExitPmAuthProtocolGuid               ## SOMETIMES_CONSUMES
+
+  ## PRODUCES
+  gEfiPlatformCpuProtocolGuid
+
+  ## PRODUCES
+  gDxeChvPlatformPolicyGuid
+
+  ## PRODUCES
+  gDxePchPlatformPolicyProtocolGuid
+
+  ## CONSUMES 
+  gEfiFirmwareVolume2ProtocolGuid
+
+  ## CONSUMES 
+  gEfiMpServiceProtocolGuid
+
+  ## PRODUCES
+  gPpmPlatformPolicyProtocolGuid
+
+  ## PRODUCES
+  gPlatformGOPPolicyGuid
+
+  ## CONSUMES
+  gIgdOpRegionProtocolGuid
+
+[Pcd]
+  ## SOMETIMES_CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdPBTNDisableInterval
+
+  ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+
+  ## SOMETIMES_CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashAreaBaseAddress
+
+  ## SOMETIMES_CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashMicroCodeAddress
+
+  ## SOMETIMES_CONSUMES
+  gEfiIntelFrameworkModulePkgTokenSpaceGuid.PcdFastPS2Detection
+
+  ## SOMETIMES_PRODUCES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution
+
+  ## SOMETIMES_PRODUCES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution
+
+  ## CONSUMES
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdPlatformInfo
+
+  ## CONSUMES
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdSsidSvid
+
+  ## SOMETIMES_PRODUCES
+  gEfiCHVTokenSpaceGuid.PcdBmpImageGuid
+
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdPlatformInfo
+
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdSystemConfiguration
+
+  gPlatformModuleTokenSpaceGuid.PcdCustomizedVbtFile ## CONSUMES
+
+[Depex]
+  gEfiVariableArchProtocolGuid AND
+  gEfiVariableWriteArchProtocolGuid
+

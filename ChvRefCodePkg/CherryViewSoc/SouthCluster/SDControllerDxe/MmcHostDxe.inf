@@ -1,0 +1,86 @@
+## @file
+#  PCH SD/MMC Controller Dxe Module
+#
+#  Provides support for PCH SD/MMC controller.
+#
+#  Copyright (c) 1999 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+################################################################################
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = MmcHost
+  FILE_GUID                      = 354492A1-A743-4EEB-BEB9-F8C3E5CAF641
+  MODULE_TYPE                    = UEFI_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = SdHostDriverEntryPoint
+
+################################################################################
+#
+# The following information is for reference only and not required by the build 
+# tools.
+#
+################################################################################
+#  VALID_ARCHITECTURES           = IA32 X64 IPF EBC
+
+
+################################################################################
+#
+# Sources Section - list of files that are required for the build to succeed.
+#
+################################################################################
+[Sources.common]
+  ComponentName.c
+  SdHostDriver.h
+  SdHostDriver.c
+  SdHostController.c
+
+################################################################################
+#
+# Package Dependency Section - list of Package files that are required for
+#                              this module.
+#
+################################################################################
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+
+################################################################################
+#
+# Library Class Section - list of Library Classes that are required for
+#                         this module.
+#
+################################################################################
+[LibraryClasses]
+  UefiDriverEntryPoint
+  DebugLib
+  UefiBootServicesTableLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  UefiLib
+  DevicePathLib
+  IoLib
+  PcdLib
+
+################################################################################
+#
+# Protocol C Name Section - list of Protocol and Protocol Notify C Names
+#                           that this module uses or produces.
+#
+################################################################################
+[Protocols]
+  ## TO_START
+  gEfiPciIoProtocolGuid
+
+  ## BY_START
+  gEfiSdHostIoProtocolGuid
+  

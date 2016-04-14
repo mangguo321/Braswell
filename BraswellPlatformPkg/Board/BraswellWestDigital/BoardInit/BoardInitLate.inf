@@ -1,0 +1,61 @@
+## @file
+#  GPIO porting module for Intel(R) Atom(TM) x5 Processor Series.
+#
+#  This module will do the basic PCH GPIO porting.
+#
+#  Copyright (c) 2014 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010017
+  BASE_NAME                      = BraswellWestDigitalInitLate
+  FILE_GUID                      = CC235019-C750-41E4-AF71-A172C07ACE47
+  VERSION_STRING                 = 1.0
+  MODULE_TYPE                    = PEIM
+  CONSTRUCTOR                    = BraswellWestDigitalInitLateConstructor
+
+[Sources]
+  BoardInitLate.c
+
+[LibraryClasses]
+  PeiServicesLib
+  PcdLib
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+
+[Pcd]
+  ## SOMETIMES_CONSUMES
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdPlatformInfo
+
+  ## SOMETIMES_PRODUCES
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdGpioInitFunc
+  
+  ## SOMETIMES_CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdGPIOSUS6Configuration
+  
+  ## SOMETIMES_CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdGPIOSUS7Configuration
+  
+  ## SOMETIMES_CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdGPIOSUS8Configuration
+
+[Ppis]
+  ## NOTIFY
+  gBoardDetectionStartPpiGuid    
+
+  ## SOMETIMES_PRODUCES
+  ## SOMETIMES_CONSUMES
+  gBoardDetectedPpiGuid
+  

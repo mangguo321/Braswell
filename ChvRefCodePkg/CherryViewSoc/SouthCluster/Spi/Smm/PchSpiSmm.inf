@@ -1,0 +1,64 @@
+## @file
+#  Provides SMM SPI protocol based on SPI Host Controller
+#
+#  This module installs SMM SPI protocol to provide PCH SPI commands 
+#  interface from the host controller.
+#
+#  Copyright (c) 2012 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PchSpiSmm
+  FILE_GUID                      = 575C0997-C5C6-4235-8F11-1B7FC747FC70
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+  ENTRY_POINT                    = InstallPchSpi
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 IPF EBC
+#
+
+[Sources]
+  PchSpi.h
+  PchSpi.c
+  ../Common/SpiCommon.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+
+[LibraryClasses]
+  IoLib
+  PciLib
+  DebugLib
+  BaseMemoryLib
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  PchPlatformLib
+  S3BootScriptLib
+  SmmServicesTableLib
+
+[Protocols]
+  ## PRODUCES
+  gEfiSmmSpi2ProtocolGuid
+
+[Pcd]
+  ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+
+[Depex]
+  gEfiSmmBase2ProtocolGuid
+

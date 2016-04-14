@@ -1,0 +1,46 @@
+## @file
+#  Braswell Cpu Power Management ACPI Table Module
+#
+#  Provides the required ACPI table information to allow an ACPI aware OS to
+#  provide power management control of valleyview processor.  These tables
+#  must be consumed by a separate module so that they can be published so an
+#  OS can use them.
+#
+#  Copyright (c) 1999 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = CpuAcpiTables2
+  FILE_GUID                      = 92638AB2-9D19-4f6f-B824-539FEE6E6353
+  MODULE_TYPE                    = USER_DEFINED
+  VERSION_STRING                 = 1.0
+  EDK_RELEASE_VERSION            = 0x00020000
+  EFI_SPECIFICATION_VERSION      = 0x00020000
+
+
+[sources.common]
+  CpuSsdt/Cpu0Cst.asl
+  CpuSsdt/Cpu0Ist.asl
+  CpuSsdt/Cpu0Tst.asl
+  CpuSsdt/ApCst.asl
+  CpuSsdt/ApIst.asl
+  CpuSsdt/ApTst.asl
+  CpuSsdt/CpuPm.asl
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  
+[Guids]
+  gPowerManagementAcpiTableStorageGuid   ## PRODUCES    ## FV
+  

@@ -1,0 +1,37 @@
+## @file
+#  Component description file for internal graphics device library                                           
+#
+#  Copyright (c) 1999 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SmmKscLib
+  FILE_GUID                      = EA30D07C-2AE7-454e-AE1F-12FBF9BD3A62
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SmmKscLib
+
+
+[Sources]
+  SmmKscLib.c
+  
+[Packages]
+  MdePkg/MdePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  
+
+[LibraryClasses]
+  DebugLib
+  SmmIoLib
+  StallSmmLib

@@ -1,0 +1,30 @@
+## @file
+# Microcode Update Module
+#
+# Provides the required microcode information for the processor.
+#
+# Copyright (c) 2005 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION          = 0x00010005
+  BASE_NAME            = MicrocodeUpdates
+  MODULE_TYPE          = USER_DEFINED
+  FILE_GUID            = 6E6D3E76-4540-421F-8CC9-C25288FF28EB
+  VERSION_STRING       = 1.0
+  COMPONENT_TYPE       = Microcode
+  FFS_EXT              = .ffs
+
+[Sources.common]
+  M01406C2220.mcb
+  M01406C334A.mcb
+

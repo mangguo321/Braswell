@@ -1,0 +1,65 @@
+## @file
+#  Smram Save Information SMM Module
+#
+#  This driver provides smi handler for storing information into smram.
+#
+#  Copyright (c) 2010 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SmramSaveInfoHandlerSmm
+  FILE_GUID                      = C95DC4A9-3EED-4DAD-AC31-A5CF5E61F6B1
+  MODULE_TYPE                    = DXE_SMM_DRIVER
+  VERSION_STRING                 = 1.0
+  PI_SPECIFICATION_VERSION       = 0x0001000A
+
+  ENTRY_POINT                    = SmramSaveInfoHandlerSmmMain
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+# VALID_ARCHITECTURES           = IA32 X64 
+#
+
+[Sources.common]
+  SmramSaveInfoHandlerSmm.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  UefiRuntimeServicesTableLib
+  SmmServicesTableLib
+  BaseLib
+  BaseMemoryLib
+  IoLib
+
+[Protocols]
+  ## CONSUMES
+  gEfiSmmSwDispatch2ProtocolGuid
+
+  ## CONSUMES
+  gEfiSmmControl2ProtocolGuid
+
+  ## NOTIFY
+  gEfiSmmReadyToLockProtocolGuid
+
+[Depex]
+  gEfiSmmSwDispatch2ProtocolGuid AND
+  gEfiSmmControl2ProtocolGuid
+
+[BuildOptions]
+  *_*_X64_CC_FLAGS  = -D X64_BUILD_SUPPORT=1
+  

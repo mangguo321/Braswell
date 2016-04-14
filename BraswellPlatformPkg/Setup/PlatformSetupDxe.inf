@@ -1,0 +1,153 @@
+## @file
+#  Component description file for PlatformSetupDxe module
+#
+#  This driver produces UEFI PLATFORM_DRIVER_OVERRIDE_PROTOCOL if this protocol doesn't exist.
+#  It doesn't install again if this protocol exists.
+#  It only implements one interface GetDriver of PLATFORM_DRIVER_OVERRIDE_PROTOCOL protocol
+#  and doesn't support other two interfaces GetDriverPath, DriverLoaded.
+#
+#  This driver also offers an UI interface in device manager to let user configure
+#  platform override protocol to override the default algorithm for matching
+#  drivers to controllers.
+#
+#  The main flow:
+#  1. It dynamicly locate all controller device path.
+#  2. It dynamicly locate all drivers which support binding protocol.
+#  3. It export and dynamicly update two menu to let user select the
+#     mapping between drivers to controllers.
+#  4. It save all the mapping info in NV variables for the following boot,
+#     which will be consumed by GetDriver API of the produced the platform override protocol.
+#
+#  Copyright (c) 1999 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PlatformSetupDxe
+  FILE_GUID                      = C1A69A12-8653-4fde-A215-48FCD95288C3
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = PlatformSetupDxeInit
+  UNLOAD_IMAGE                   = PlatformSetupDxeUnload
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 IPF EBC
+#
+
+[Sources]
+  VfrStrings.uni
+  FwVersionStrings.uni
+  Vfr.vfr
+  Main.vfi
+  Boot.vfi
+  PlatformSetupDxe.c
+  SetupInfoRecords.c
+  PlatformSetupDxe.h
+  SouthClusterConfig.vfi
+  Thermal.vfi
+  SetupFunctions.c
+  UnCore.vfi
+  SystemComponent.vfi
+  DebugConfig.vfi
+  UqiList.uni
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec    #for PchAccess.h
+  SecurityPkg/SecurityPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  UefiLib
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  HiiLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  DevicePathLib
+  DxeServicesTableLib
+  UefiRuntimeServicesTableLib
+  PrintLib
+  BiosIdLib
+  CpuIA32Lib
+  IoLib
+
+[Guids]
+  ## SOMETIMES_CONSUMES   ## GUID
+  gEfiProcessorSubClassGuid
+  
+  ## SOMETIMES_CONSUMES   ## GUID
+  gEfiMiscSubClassGuid
+
+  ## SOMETIMES_CONSUMES   ## GUID
+  gEfiCacheSubClassGuid
+  
+  ## SOMETIMES_CONSUMES   ## GUID
+  gEfiMemorySubClassGuid
+
+[Protocols]
+  ## SOMETIMES_CONSUMES
+  gEfiDriverBindingProtocolGuid
+
+  ## PRODUCES
+  gEfiDevicePathProtocolGuid
+
+  ## CONSUMES
+  gEfiFormBrowser2ProtocolGuid
+
+  ## CONSUMES
+  gEfiHiiConfigRoutingProtocolGuid
+
+  ## PRODUCES
+  gEfiHiiConfigAccessProtocolGuid
+
+  ## CONSUMES
+  gEdkiiFormBrowserEx2ProtocolGuid
+
+  ## SOMETIMES_CONSUMES
+  gEfiLegacyBiosProtocolGuid
+
+  ## SOMETIMES_CONSUMES
+  gEfiDiskInfoProtocolGuid
+
+  ## SOMETIMES_CONSUMES
+  gEfiMpServiceProtocolGuid
+
+  ## SOMETIMES_CONSUMES
+  gDxePchPlatformPolicyProtocolGuid
+
+  ## CONSUMES
+  gEfiSmbiosProtocolGuid
+
+  ## CONSUMES
+  gEfiFormBrowserExProtocolGuid
+
+[Pcd]
+  ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdPlatformInfo
+
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdSystemConfiguration
+
+[Depex]
+  gEfiFormBrowser2ProtocolGuid AND
+  gEfiHiiConfigRoutingProtocolGuid AND
+  gEfiFormBrowserExProtocolGuid AND
+  gEdkiiFormDisplayEngineProtocolGuid
+

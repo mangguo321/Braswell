@@ -1,0 +1,124 @@
+## @file
+#  Sample to provide FSP platform information related function.
+#
+#  Copyright (c) 2014 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+################################################################################
+#
+# Defines Section - statements that will be processed to create a Makefile.
+#
+################################################################################
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = BaseFspPlatformInfoLibSample
+  FILE_GUID                      = 7CB6D6ED-5012-4e35-A42E-4C6512085A9E
+  MODULE_TYPE                    = SEC
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = FspPlatformInfoLib
+
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+################################################################################
+#
+# Sources Section - list of files that are required for the build to succeed.
+#
+################################################################################
+
+[Sources]
+  FspPlatformInfoLibSample.c
+  MemoryMappedVariable.c
+
+
+################################################################################
+#
+# Package Dependency Section - list of Package files that are required for
+#                              this module.
+#
+################################################################################
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+  IntelFspPkg/IntelFspPkg.dec
+  IntelFspWrapperPkg/IntelFspWrapperPkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  ChvFspBinPkg/ChvFspBinPkg.dec
+  SecurityPkg/SecurityPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  UefiCpuLib
+  FspApiLib
+  HobLib
+  PcdLib
+  PeiServicesTablePointerLib
+
+[Ppis]
+  gEfiPeiReadOnlyVariable2PpiGuid                    ## CONSUMES
+
+[Pcd]
+  gFspWrapperTokenSpaceGuid.PcdTemporaryRamBase      ## CONSUMES
+  gFspWrapperTokenSpaceGuid.PcdTemporaryRamSize      ## CONSUMES
+  gFspWrapperTokenSpaceGuid.PcdFlashFvFspBase        ## CONSUMES
+  gFspWrapperTokenSpaceGuid.PcdFlashFvSecondFspBase  ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvVbtBase    ## SOMETIME_CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvVbtSize    ## SOMETIME_CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdCustomizedVbtFile ## CONSUMES
+  gFspWrapperTokenSpaceGuid.PcdMaxUpdRegionSize      ## CONSUMES
+  
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdPlatformInfo         ## CONSUMES
+  gEfiCHVTokenSpaceGuid.PcdBmpImageGuid                   ## SOMETIME_CONSUMES
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdMemorySpdPtr         ## CONSUMES
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdOemMemeoryDimmType   ## CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdMrcInitSpdAddr1          ## CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdMrcInitSpdAddr2          ## CONSUMES
+  
+  ## SOMETIMES_CONSUMES
+  gIntelSiBasicPkgTokenSpaceGuid.PcdMmioBase
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase      ## SOMETIMES_CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase64    ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize      ## CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFspAuthenticatedVariable       ## SOMETIMES_CONSUMES
+  
+[PcdEx]  
+  ## CONSUMES
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdSystemConfiguration
+[Guids] 
+  gEfiChvVariableGuid
+  ## SOMETIMES_CONSUMES   ## HOB
+  gEfiVariableGuid
+  ## SOMETIMES_CONSUMES   ## HOB
+  gEfiVariableIndexTableGuid
+  gEfiSystemNvDataFvGuid            ## SOMETIMES_CONSUMES   ## GUID
+  ## SOMETIMES_CONSUMES   ## HOB
+  gEdkiiFaultTolerantWriteGuid
+  ## SOMETIMES_CONSUMES
+  gEfiAuthenticatedVariableGuid
+  ## SOMETIMES_CONSUMES
+  gEfiVariableGuid
+  ## SOMETIMES_CONSUMES ## Guid
+  gEfiAcpiVariableCompatiblityGuid
+
+  ## SOMETIMES_CONSUMES ## Guid
+  gEfiPlatformInfoGuid
+
+

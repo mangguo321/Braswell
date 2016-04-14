@@ -1,0 +1,49 @@
+## @file
+#  Recovery Hook Library
+#
+#  Provides a minimal implementation for capsule ranking and integrity verification.
+#  This implementation returns the first capsule found and assumes all capsules
+#  are valid.
+#
+#  Copyright (c) 2010 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = RecoveryOemHookLib
+  FILE_GUID                      = DE6D4FB9-12DB-4dbb-ACF1-92514388355F
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = RecoveryOemHookLib|PEIM
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32
+#
+
+[Sources]
+  RecoveryOemHookLib.c
+  CommonHeader.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+
+[LibraryClasses]
+  PeiServicesLib
+  PeiServicesTablePointerLib
+  DebugLib
+
+[Ppis]
+  gEfiPeiDeviceRecoveryModulePpiGuid            ## SOMETIMES_CONSUMES
+

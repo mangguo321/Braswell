@@ -1,0 +1,51 @@
+## @file
+#  Provides the Inte PCH ACPI Timer Library
+#
+#  Copyright (c) 1999 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = IntelPchAcpiTimerLib
+  FILE_GUID                      = 0C0AC8C1-E368-4d20-85FE-23EFB3DB094E
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = TimerLib
+  EDK_RELEASE_VERSION            = 0x00020000
+  EFI_SPECIFICATION_VERSION      = 0x00020000
+
+  CONSTRUCTOR                    = IntelPchAcpiTimerLibConstructor
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64 IPF EBC
+#
+
+[Sources.common]
+  IntelPchAcpiTimerLib.c
+  CommonHeader.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+
+[LibraryClasses]
+  PcdLib
+  PciLib
+  IoLib
+  BaseLib
+
+[Pcd.common]
+  gEfiPchTokenSpaceGuid.PcdPchAcpiIoPortBaseAddress     # CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress     # CONSUMES

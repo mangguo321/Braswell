@@ -1,0 +1,221 @@
+## @file
+#  Platform Pei Module
+#
+#  This module will do chipset programming, create platforminfo hob, install
+#  required mmio policy ppi.
+#
+#  Copyright (c) 1999 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PlatformPeim
+  FILE_GUID                      = E95B8DF8-D2DD-45C7-8977-E470219BED51
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = PeiInitPlatform
+  PI_SPECIFICATION_VERSION	     = 0x0001000A
+
+[Sources.common]
+  Generic/Recovery.c
+  Platform.c
+  Platform.h
+  MemoryCallback.c
+  CommonHeader.h
+  Stall.c
+  BootMode.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  BraswellPlatformPkg/BraswellPlatformPkg.dec
+  IntelFrameworkPkg/IntelFrameworkPkg.dec
+  IntelFrameworkModulePkg/IntelFrameworkModulePkg.dec
+  ChvRefCodePkg/ChvRefCodePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+  CryptoPkg/CryptoPkg.dec
+  ChvFspBinPkg/ChvFspBinPkg.dec
+
+[LibraryClasses]
+  PeimEntryPoint
+  DebugLib
+  HobLib
+  MultiPlatformLib
+  MtrrLib
+  PerformanceLib
+  BaseCryptLib
+  RecoveryOemHookLib
+  GpioLib
+
+[Ppis]
+  ## PRODUCES
+  gEfiPeiStallPpiGuid
+
+  ## NOTIFY
+  gEfiPeiMemoryDiscoveredPpiGuid
+
+  ## CONSUMES
+  gEfiPeiReadOnlyVariable2PpiGuid
+
+  ## PRODUCES
+  gEfiPeiBootInRecoveryModePpiGuid
+
+  ## PRODUCES
+  gEfiPeiRecoveryModulePpiGuid
+
+  ## PRODUCES
+  gEfiPeiMasterBootModePpiGuid
+
+  gBoardDetectionStartPpiGuid
+
+  ## NOTIFY
+  gEfiEndOfPeiSignalPpiGuid
+
+[Guids]
+  ## SOMETIMES_CONSUMES  ## Variable:L"Setup"
+  gEfiSetupVariableGuid
+  ## SOMETIMES_CONSUMES
+  gRecoveryOnFatIdeDiskGuid
+  ## SOMETIMES_CONSUMES
+  gRecoveryOnFatFloppyDiskGuid
+  ## SOMETIMES_CONSUMES
+  gRecoveryOnDataCdGuid
+  ## SOMETIMES_CONSUMES
+  gRecoveryOnFatUsbDiskGuid
+
+[Pcd.common]
+  ## SOMETIMES_CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvMainBase
+
+  ## SOMETIMES_CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvMainSize
+
+  ## SOMETIMES_CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvRecovery2Base
+
+  ## SOMETIMES_CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvRecovery2Size
+
+  ## CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+
+  ## SOMETIMES_CONSUMES
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdPlatformInfo
+
+  # CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdSdcardMode
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableHsuart0
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableHsuart1
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableAzalia
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableSata
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableXhci
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableLpe
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableDma0
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableDma1
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableI2C0
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableI2C1
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableI2C2
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableI2C3
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableI2C4
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableI2C5
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEnableI2C6
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdEmmcMode
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdSataInterfaceSpeed
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.ISPEnable
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.ISPPciDevConfig
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdTurboMode
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdMrcInitTsegSize
+
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdIgdDvmt50PreAlloc
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdApertureSize
+  
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdGttSize  
+
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdDvfsEnable
+
+  # CONSUMES
+  gChvFspBinPkgTokenSpaceGuid.PcdPnpSettings
+  
+  gPlatformModuleTokenSpaceGuid.PcdBootToFirmwareUserInterface  ## SOMETIMES_PRODUCES
+  gEfiIntelFrameworkModulePkgTokenSpaceGuid.PcdBootState        ## SOMETIMES_CONSUMES
+  gPlatformModuleTokenSpaceGuid.PcdEnableFastBoot               ## SOMETIMES_CONSUMES
+  
+  
+[FeaturePcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdRecoveryOnFatUsbDisk       ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdRecoveryOnDataCD           ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdRecoveryOnFatFloppyDisk    ## CONSUMES
+  gEfiMdeModulePkgTokenSpaceGuid.PcdRecoveryOnIdeDisk          ## CONSUMES
+
+[PcdEx]
+  ## PRODUCES
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdSystemConfiguration
+
+[Depex]
+  gEfiPeiReadOnlyVariable2PpiGuid
+
+# [Hob]
+# FIRMWARE_VOLUME   ## PRODUCES
+# [BootMode]
+#  S3_RESUME                        ## PRODUCES
+#
+

@@ -1,0 +1,693 @@
+## @file
+#  Platform Package
+#
+#  This package contains the definitions and module implementation
+#
+#  Copyright (c) 2009 - 2015, Intel Corporation. All rights reserved.<BR>
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php.
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 0x00010005
+  PACKAGE_NAME                   = BraswellPlatformPkg
+  PACKAGE_GUID                   = 01539A63-5D0B-4d6a-B59D-09D5F62B4090
+  PACKAGE_VERSION                = 0.1
+
+[Includes]
+  .
+  Include
+  Include/Library
+  IntelSiliconBasic\Include
+  IntelSiliconBasic\Include\Library
+  IntelSiliconBasic\Library
+
+[Ppis]
+  gBoardDetectionStartPpiGuid  = { 0xa09b1a0c, 0x690c, 0x4d48, { 0xa8, 0x98, 0xa1, 0x2c, 0x94, 0x26, 0xd7, 0x6 }}
+  gBoardDetectedPpiGuid        = { 0x5354b283, 0xf0b3, 0x434e, { 0x88, 0xf8, 0x19, 0xc4, 0x7b, 0x3a, 0xf7, 0xf9 }}
+
+[Guids]
+  gEfiBootStateGuid                              = { 0x60b5e939, 0x0fcf, 0x4227, { 0xba, 0x83, 0x6b, 0xbe, 0xd4, 0x5b, 0xc0, 0xe3 }}
+  gClientCommonModuleTokenSpaceGuid       = { 0x6239f660, 0x54dc, 0x4cf2, { 0xb2, 0x7, 0x45, 0xdb, 0x9c, 0x4d, 0x22, 0xeb }}
+  gEfiMemoryConfigDataGuid                = { 0x80dbd530, 0xb74c, 0x4f11, { 0x8c, 0x03, 0x41, 0x86, 0x65, 0x53, 0x28, 0x31 } }
+  gPlatformModuleTokenSpaceGuid           = { 0x69d13bf0, 0xaf91, 0x4d96, { 0xaa, 0x9f, 0x21, 0x84, 0xc5, 0xce, 0x3b, 0xc0 } }
+  gEfiIchTokenSpaceGuid                   = { 0xe38c11e3, 0x968f, 0x47b8, { 0xac, 0xef, 0xac, 0xc0, 0x69, 0x3d, 0xb9, 0xff } }
+  gEfiPlatformCpuInfoGuid                 = { 0xbb9c7ab7, 0xb8d9, 0x4bf3, { 0x9c, 0x29, 0x9b, 0xf3, 0x41, 0xe2, 0x17, 0xbc } }
+  gEfiBiosIdGuid                          = { 0xC3E36D09, 0x8294, 0x4b97, { 0xA8, 0x57, 0xD5, 0x28, 0x8F, 0xE3, 0x3E, 0x28 } }
+  gEfiSetupVariableGuid                   = { 0xec87d643, 0xeba4, 0x4bb5, { 0xa1, 0xe5, 0x3f, 0x3e, 0x36, 0xb2, 0x0d, 0xa9 } }
+  gBmpImageGuid                           = { 0x130E9248, 0x2F59, 0x4713, { 0x8F, 0x0B, 0x03, 0x9B, 0xC4, 0x25, 0xA5, 0xD1 } }
+  gEfiTpmDeviceInstanceTpm20FtpmGuid      = { 0x1dd8a521, 0x7de9, 0x47c2, { 0x8e, 0x06, 0x29, 0xf0, 0xd5, 0x70, 0x24, 0xc6 } }
+# Intel VBT binary for different boards
+  gBswCrImageGuid  = { 0xEE62C785, 0x3CF3, 0x4027, { 0x86, 0x72, 0x6D, 0xE4, 0xE7, 0xFF, 0x43, 0x17 } }
+
+  gEfiGraphicsInfoHobGuid                 = { 0x39f62cce, 0x6825, 0x4669, { 0xbb, 0x56, 0x54, 0x1a, 0xba, 0x75, 0x3a, 0x07 }}
+  gEfiEdkIIPlatformTokenSpaceGuid         = {0x27bed9ba, 0x661f, 0x4cad, {0xa4, 0x44, 0x59, 0x7f, 0x30, 0xa8, 0xf3, 0x68}}
+  gEfiPlatformInfoGuid                    = { 0x1e2acc41, 0xe26a, 0x483d, { 0xaf, 0xc7, 0xa0, 0x56, 0xc3, 0x4e, 0x08, 0x7b }}
+  gEfiIfrFrontPageGuid                    = { 0xe58809f8, 0xfbc1, 0x48e2, { 0x88, 0x3a, 0xa3, 0xf, 0xdc, 0x4b, 0x44, 0x1e }}
+  gIntelSiBasicPkgTokenSpaceGuid          = { 0x6de9e48c, 0x622, 0x4a33, { 0xab, 0x29, 0xdd, 0xc8, 0xd4, 0xf9, 0xc7, 0x6d}}
+
+## Include/MultiPlatSupport.h
+  gDefaultDataFileGuid                        = { 0x1ae42876, 0x008f, 0x4161, { 0xb2, 0xb7, 0x1c, 0x0d, 0x15, 0xc5, 0xef, 0x43 }}
+  gDefaultDataOptSizeFileGuid                 = { 0x003e7b41, 0x98a2, 0x4be2, { 0xb2, 0x7a, 0x6c, 0x30, 0xc7, 0x65, 0x52, 0x25 }}
+
+  gEfiHtBistHobGuid  =  {0xbe644001, 0xe7d4, 0x48b1, {0xb0, 0x96, 0x8b, 0xa0, 0x47, 0xbc, 0x7a, 0xe7}}
+
+## Include/Guid/IA32FamilyCpuPkgTokenSpace.h
+  gEfiCpuTokenSpaceGuid          = { 0x2ADA836D, 0x0A3D, 0x43D6, { 0xA2, 0x5A, 0x38, 0x45, 0xCA, 0xD2, 0xD4, 0x00 }}
+
+[Protocols]
+  gEfiLpcWpce791PolicyProtocolGuid        = { 0xab2bee2f, 0xc1a6, 0x4399, { 0x85, 0x3d, 0xc0, 0x7c, 0x77, 0x4f, 0xfd, 0x0d } }
+
+  gSmmCpuSyncProtocolGuid        = { 0xd5950985, 0x8be3, 0x4b1c, { 0xb6, 0x3f, 0x95, 0xd1, 0x5a, 0xb3, 0xb6, 0x5f }}
+  gSmmCpuSync2ProtocolGuid       = { 0x9db72e22, 0x9262, 0x4a18, { 0x8f, 0xe0, 0x85, 0xe0, 0x3d, 0xfa, 0x96, 0x73 }}
+  gEfiSmmCpuServiceProtocolGuid  = { 0x1d202cab, 0xc8ab, 0x4d5c, { 0x94, 0xf7, 0x3c, 0xfc, 0xc0, 0xd3, 0xd3, 0x35 }}
+  gEfiMmioDeviceProtocolGuid                = { 0x24486226, 0xf8c2, 0x41f5, {0xb9, 0xdd, 0x78, 0x3e, 0x9e, 0x56, 0xde, 0xa0}}  
+  ## SPI flash part protocol GUID
+  #
+  ## Include/Protocol/SpiFlashPart.h
+  gSpiFlashPartProtocolGuid     = {0x662ff00f, 0xa1c7, 0x42aa, {0xa6, 0xe4, 0xf4, 0x0d, 0xf5, 0x10, 0xfd, 0x23}}
+  
+  ## Provides a device specific abstraction layer for access to the SPI flash
+  #  device while in SMM.
+  #
+  ## Include/Protocol/SmmSpiDevice.h
+  gSmmSpiDeviceProtocolGuid      = {0xd963c5cd, 0x8cac, 0x498a, {0xbf, 0x78, 0xd1, 0x56, 0x49,  0x1, 0x85, 0x38}}
+
+  ## Provides a device specific abstraction layer for access to the SPI flash
+  #  device.
+  #
+  ## Include/Protocol/SpiDevice.h
+  gSpiDeviceProtocolGuid         = {0x37DCF59A, 0x944A, 0x11DF, {0x97, 0xD4, 0xE3, 0xAA, 0xC9, 0x24, 0x56, 0x53}}
+  
+  ## Include/Protocol/FlashDeviceInfo.h
+  gSmmCpuSyncProtocolGuid        = { 0xd5950985, 0x8be3, 0x4b1c, { 0xb6, 0x3f, 0x95, 0xd1, 0x5a, 0xb3, 0xb6, 0x5f }}
+  gSmmCpuSync2ProtocolGuid       = { 0x9db72e22, 0x9262, 0x4a18, { 0x8f, 0xe0, 0x85, 0xe0, 0x3d, 0xfa, 0x96, 0x73 }}
+  gEfiSmmCpuServiceProtocolGuid  = { 0x1d202cab, 0xc8ab, 0x4d5c, { 0x94, 0xf7, 0x3c, 0xfc, 0xc0, 0xd3, 0xd3, 0x35 }}
+
+[PcdsFixedAtBuild]
+  
+  gPlatformModuleTokenSpaceGuid.PcdIFWISigBaseAddress|0x0F00|UINT32|0x20000019
+  gPlatformModuleTokenSpaceGuid.PcdPBTNDisableInterval|0x01F4|UINT32|0x2000001A
+
+  ## Defines for the BDS
+  # Defines the SimpleTextOut Colors, a number of UINT32
+  gPlatformModuleTokenSpaceGuid.PcdBdsUiTextAttribute|0x0007|UINT32|0x4000000D
+  # Defines the SimpleTextOut Colors, a number of UINT32
+  gPlatformModuleTokenSpaceGuid.PcdBdsUiTextInverseAttribute|0x0070|UINT32|0x4000000E
+  # Defines the start position to set the cursor to, a number of UINT32
+  gPlatformModuleTokenSpaceGuid.PcdBdsUiTextStartColumn|4|UINT32|0x4000000F
+  # Defines the max cloumn in BDS, a number of UINT32
+  gPlatformModuleTokenSpaceGuid.PcdBdsUiTextMaxColumn|76|UINT32|0x40000010
+  # Defines the start position to set the cursor to, a number of UINT32
+  gPlatformModuleTokenSpaceGuid.PcdBdsUiTextStartRow|2|UINT32|0x40000011
+
+  ## FFS filename to find the default signed test file.
+  gPlatformModuleTokenSpaceGuid.PcdSignedTestFile |{ 0xe7, 0xa5, 0x32, 0x7a, 0x74, 0x7, 0x5d, 0x44, 0xab, 0xae, 0xe7, 0xe4, 0xe6, 0x83, 0xe, 0x5}|VOID*|0x40000012
+ 
+  gPlatformModuleTokenSpaceGuid.PcdFlashMinEraseSize|0x1000|UINT32|0x40000013
+
+    ## Provides the BIOS Starting Address Segment to be used when generating the
+  #  SMBIOS Type 0 structure.  The size of the runtime BIOS image can be
+  #  computed by subtracting the Starting Address Segment from 10000h and
+  #  multiplying the result by 16.
+  #
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSBiosStartAddress|0xF000|UINT16|0xB0000010
+
+  ## Provides the BIOS Characteristics to be used when generating the SMBIOS
+  #  Type 0 structure.  The definition of each bit in this field can be found
+  #  in the SMBIOS specification.
+  #
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSBiosChar|0x03037C099880|UINT64|0xB0000011
+
+  ## Provides the BIOS Extension Characteristics Byte 1 to be used when
+  #  generating the SMBIOS Type 0 structure.  The definition of each bit in this
+  #  field can be found in the SMBIOS specification.
+  #
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSBiosCharEx1|0x03|UINT8|0xB0000012
+
+  ## Provides the BIOS Extension Characteristics Byte 2 to be used when
+  #  generating the SMBIOS Type 0 structure.  The definition of each bit in this
+  #  field can be found in the SMBIOS specification.
+  #
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSBiosCharEx2|0x03|UINT8|0xB0000013
+
+  # Identifies the state of the enclosure when it was last booted. See 3.3.4.2 for definitions.
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSChassisBootupState|0x03|UINT8|0xB0000049
+  # Identifies the state of the enclosures power supply (or supplies) when last booted. See 3.3.4.2 for definitions.
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSChassisPowerSupplyState|0x03|UINT8|0xB000004A
+  # Identifies the enclosures physical security status when last booted. See 3.3.4.3 for definitions.
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSChassisSecurityState|0x01|UINT8|0xB000004B
+  # Contains OEM- or BIOS vendor-specific information.
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSChassisOemDefined|0x0|UINT32|0xB000004C
+  # The height of the enclosure, in 'U's. A U is a standard unit of measure for the height of a rack or rack-mountable component
+  # and is equal to 1.75 inches or 4.445 cm. A value of 00h indicates that the enclosure height is unspecified.
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSChassisHeight|0x0|UINT8|0xB000004D
+  # Identifies the number of power cords associated with the enclosure or chassis. A value of 00h indicates that the number is unspecified.
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSChassisNumberPowerCords|0x0|UINT8|0xB000004E
+  # Identifies the number of Contained Element records that follow, in the range 0 to 255.
+  # Each Contained Element group comprises m bytes, as specified by the Contained Element Record Length field that follows.
+  # If no Contained Elements are included, this field is set to 0.
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSChassisElementCount|0x0|UINT8|0xB000004F
+  # Identifies the byte length of each Contained Element record that follow, in the range 0 to 255.
+  # If no Contained Elements are included, this field is set to 0. For v2.3.2 and later of this specification,
+  # this field is set to at least 03h when Contained Elements are specified.
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSChassisElementRecordLength|0x0|UINT8|0xB0000050  
+  ## Provides the BIOS Release Date string to be used when generating the SMBIOS
+  #  Type 0 structure.
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSBiosReleaseDate|"01/19/2015"|VOID*|0xB0000035  
+  # SystemSKUNumber String
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSSystemSKUNumber|"System SKUNumber"|VOID*|0xB000003F
+  # System Family String
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSSystemFamily|"Cherryview System"|VOID*|0xB0000040
+  # Board Assert Tag
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSBoardAssetTag|"Base Board Asset Tag"|VOID*|0xB0020044 
+
+[PcdsFixedAtBuild, PcdsPatchableInModule]
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvRecoveryBase|0xFFF80000|UINT32|0x20000004
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvRecoverySize|0x00080000|UINT32|0x20000005
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvShellBase|0xFFF50000|UINT32|0x20000009
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvShellSize|0x00000000|UINT32|0x20000010
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvMainBase|0xFF900000|UINT32|0x20000001
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvMainSize|0x00400000|UINT32|0x20000002
+  gPlatformModuleTokenSpaceGuid.PcdFlashAreaBaseAddress|0xFF800000|UINT32|0x10000001
+  gPlatformModuleTokenSpaceGuid.PcdFlashAreaSize|0x00800000|UINT32|0x10000002
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvRecovery2Base|0xFFFA0000|UINT32|0x20000013
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvRecovery2Size|0x00040000|UINT32|0x20000014
+  gPlatformModuleTokenSpaceGuid.PcdFlashMicroCodeAddress|0xFFF90000|UINT32|0x20000015
+  gPlatformModuleTokenSpaceGuid.PcdFlashMicroCodeSize|0x00002000|UINT32|0x20000016
+  gPlatformModuleTokenSpaceGuid.PcdBiosImageBase|0xFF800000|UINT32|0x20000050
+  gPlatformModuleTokenSpaceGuid.PcdBiosImageSize|0x800000|UINT32|0x20000051
+  ## Provides the memory mapped base address of the Payload Area.  This area
+  #  must be within the memory mapped BIOS Image Area defined by the BIOS Image
+  #  Area Base Address and the BIOS Image Area Size.<BR><BR>
+  #  The address must be within the BIOS Image area.<BR>
+  #
+  # @Prompt Payload Area Base Address
+  #
+  gPlatformModuleTokenSpaceGuid.PcdFlashPayloadBase|0xFFED1000|UINT32|0x20000052
+
+  ## Provides the size of the Payload Area.<BR><BR>
+  #  Valid size values must not overlap other regions within the BIOS Image Area.<BR>
+  #
+  # @Prompt Payload Area Size
+  #
+  gPlatformModuleTokenSpaceGuid.PcdFlashPayloadSize|0x00040000|UINT32|0x20000053
+   
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvVbtBase|0x00000000|UINT32|0x20000054
+  gPlatformModuleTokenSpaceGuid.PcdFlashFvVbtSize|0x00000000|UINT32|0x20000055
+  gPlatformModuleTokenSpaceGuid.PcdCustomizedVbtFile|{0xFF, 0xFF, 0xFF, 0xFF}|VOID*|0x20000056
+  
+  ## Flag of enabling/disabling Serial I/O Protocol on UART device of Wpce791 SIO chip.<BR>
+  #
+  # @Prompt Enable Serial I/O Protocol on Wpce791 UART device
+  #  
+  gPlatformModuleTokenSpaceGuid.PcdWpce791UartSerialIoEnable|TRUE|BOOLEAN|0x50000060
+  
+  ## Determines each attribute on this GPIO <BR><BR>
+  #  BIT0         - Reserved. Should be 0. <BR>
+  #  BIT1         - GPIO TX State. 0 = Low.  1 = High.<BR>
+  #  BIT2..BIT6   - Reserved. Should be 0. <BR>
+  #  BIT7         - GPIO Light Mode. 0 = Disable.  1 = Enable.<BR>
+  #  BIT8..BIT10  - GPIO Config. <BR>
+  #                 0 = GPIO (TX Enabled and RX Enabled).  <BR>
+  #                 1 = GPO (TX Enabled and RX Disabled).  <BR>
+  #                 2 = GPI (TX Disabled and RX Enabled).  <BR>
+  #                 3 = Hi-Z (TX Disabled and RX Disabled).  <BR>
+  #                 Others = Reserved.  <BR>
+  #  BIT11..BIT14 - Reserved. Should be 0. <BR>
+  #  BIT15        - GPIO Enable.  <BR>
+  #                 0 = GPIO disabled and function defined in Pad Mode controls the pad. <BR>
+  #                 1 = GPIO enabled and Pad Register controls the pad. <BR>
+  #  BIT16..BIT19 - PAD Mode.This controls which function controls this particular Pad when GPIO Enable = 0.<BR>
+  #  BIT20..BIT23 - Termination. <BR>
+  #                 BIT20: 20K. 0 = Disable.  1 = Enable. <BR>
+  #                 BIT21: 5K.  0 = Disable.  1 = Enable. <BR>
+  #                 BIT22: 1K.  0 = Disable.  1 = Enable. <BR>
+  #                 BIT23: Pull-up or Pull-down. 0 = Pull-down.  1 = Pull-up. <BR>
+  #  BIT24..BIT25 - Reserved. Should be 0. <BR>
+  #  BIT26..BIT27 - Glitch Filter Config. Enable the Glitch Filter on the RX path to deglitch the incoming signal.<BR>
+  #                 0 = Disable (Bypass the glitch filter). <BR>
+  #                 1 = Enable for Edge Detect Only. <BR>
+  #                 2 = Enable for RX Data Only. <BR>
+  #                 3 = Enable for Edge Detect and RX Data. <BR>
+  #  BIT28..BIT31 - Interrupt Select. It defines which interrupt line driven from the GPIO Controller toggles when <BR>
+  #                 an interrupt is detected on this pad. <BR>
+  #                 0 = Interrupt Line 0.  <BR>
+  #                 1 = Interrupt Line 1.  <BR>
+  #                 ...  <BR>
+  #                 15 = Interrupt Line 15.  <BR>
+  #  BIT32..BIT34 - Interrupt and Wake Configuration.Configure the edge detection logic that is used to trigger interrupts and wakes. <BR>
+  #                 1 = Falling Edge Detect Interrupt/Wake.  <BR>
+  #                 2 = Rising Edge Detect Interrupt/Wake.  <BR>
+  #                 3 = Falling or Rising EdgeDetect Interrupt/Wake.  <BR>
+  #                 4 = Level Interrupt/Wake.  <BR>
+  #                 Others = Reserved.  <BR>
+  #  BIT35        - Open Drain Enable.  0 = Disable.  1 = Enable. <BR>
+  #  BIT36..BIT39 - Invert Rx Tx. These bits invert the RX/TX Data and RX/TX Enables to the CFIO buffer.  <BR>
+  #                 BIT36: Rx Enable.  0 = No Inversion.  1 = Inversion Enabled. <BR>
+  #                 BIT37: Tx Enable.  0 = No Inversion.  1 = Inversion Enabled. <BR>
+  #                 BIT38: Rx Data.    0 = No Inversion.  1 = Inversion Enabled. <BR>
+  #                 BIT39: Tx Data.    0 = No Inversion.  1 = Inversion Enabled. <BR>  
+  #  BIT40..BIT41 - GPE Enable. 0 = Disable. 1 = SMI. 2 = SCI. Others = Reserved.  <BR>
+  #  BIT42        - GPIO Wake capable.  0 = Disable.  1 = Enable. <BR>
+  #  BIT43        - GPIO Interrupt Mask. 0 = Masked.  1 = Unmasked. <BR>
+  #  BIT44..BIT51 - GPIO Wake Mask Bit Position.   
+  #
+  # @Prompt GPIO Pin Configuration of GPIOSUS6 
+  #
+  gPlatformModuleTokenSpaceGuid.PcdGPIOSUS6Configuration|0x00013A019C918200|UINT64|0x50000080
+  
+  ## Determines each attribute on this GPIO <BR><BR>
+  #  BIT0         - Reserved. Should be 0. <BR>
+  #  BIT1         - GPIO TX State. 0 = Low.  1 = High.<BR>
+  #  BIT2..BIT6   - Reserved. Should be 0. <BR>
+  #  BIT7         - GPIO Light Mode. 0 = Disable.  1 = Enable.<BR>
+  #  BIT8..BIT10  - GPIO Config. <BR>
+  #                 0 = GPIO (TX Enabled and RX Enabled).  <BR>
+  #                 1 = GPO (TX Enabled and RX Disabled).  <BR>
+  #                 2 = GPI (TX Disabled and RX Enabled).  <BR>
+  #                 3 = Hi-Z (TX Disabled and RX Disabled).  <BR>
+  #                 Others = Reserved.  <BR>
+  #  BIT11..BIT14 - Reserved. Should be 0. <BR>
+  #  BIT15        - GPIO Enable.  <BR>
+  #                 0 = GPIO disabled and function defined in Pad Mode controls the pad. <BR>
+  #                 1 = GPIO enabled and Pad Register controls the pad. <BR>
+  #  BIT16..BIT19 - PAD Mode.This controls which function controls this particular Pad when GPIO Enable = 0.<BR>
+  #  BIT20..BIT23 - Termination. <BR>
+  #                 BIT20: 20K. 0 = Disable.  1 = Enable. <BR>
+  #                 BIT21: 5K.  0 = Disable.  1 = Enable. <BR>
+  #                 BIT22: 1K.  0 = Disable.  1 = Enable. <BR>
+  #                 BIT23: Pull-up or Pull-down. 0 = Pull-down.  1 = Pull-up. <BR>
+  #  BIT24..BIT25 - Reserved. Should be 0. <BR>
+  #  BIT26..BIT27 - Glitch Filter Config. Enable the Glitch Filter on the RX path to deglitch the incoming signal.<BR>
+  #                 0 = Disable (Bypass the glitch filter). <BR>
+  #                 1 = Enable for Edge Detect Only. <BR>
+  #                 2 = Enable for RX Data Only. <BR>
+  #                 3 = Enable for Edge Detect and RX Data. <BR>
+  #  BIT28..BIT31 - Interrupt Select. It defines which interrupt line driven from the GPIO Controller toggles when <BR>
+  #                 an interrupt is detected on this pad. <BR>
+  #                 0 = Interrupt Line 0.  <BR>
+  #                 1 = Interrupt Line 1.  <BR>
+  #                 ...  <BR>
+  #                 15 = Interrupt Line 15.  <BR>
+  #  BIT32..BIT34 - Interrupt and Wake Configuration.Configure the edge detection logic that is used to trigger interrupts and wakes. <BR>
+  #                 1 = Falling Edge Detect Interrupt/Wake.  <BR>
+  #                 2 = Rising Edge Detect Interrupt/Wake.  <BR>
+  #                 3 = Falling or Rising EdgeDetect Interrupt/Wake.  <BR>
+  #                 4 = Level Interrupt/Wake.  <BR>
+  #                 Others = Reserved.  <BR>
+  #  BIT35        - Open Drain Enable.  0 = Disable.  1 = Enable. <BR>
+  #  BIT36..BIT39 - Invert Rx Tx. These bits invert the RX/TX Data and RX/TX Enables to the CFIO buffer.  <BR>
+  #                 BIT36: Rx Enable.  0 = No Inversion.  1 = Inversion Enabled. <BR>
+  #                 BIT37: Tx Enable.  0 = No Inversion.  1 = Inversion Enabled. <BR>
+  #                 BIT38: Rx Data.    0 = No Inversion.  1 = Inversion Enabled. <BR>
+  #                 BIT39: Tx Data.    0 = No Inversion.  1 = Inversion Enabled. <BR>  
+  #  BIT40..BIT41 - GPE Enable. 0 = Disable. 1 = SMI. 2 = SCI. Others = Reserved.  <BR>
+  #  BIT42        - GPIO Wake capable.  0 = Disable.  1 = Enable. <BR>
+  #  BIT43        - GPIO Interrupt Mask. 0 = Masked.  1 = Unmasked. <BR>
+  #  BIT44..BIT51 - GPIO Wake Mask Bit Position.   
+  #
+  # @Prompt GPIO Pin Configuration of GPIOSUS7 
+  #
+  gPlatformModuleTokenSpaceGuid.PcdGPIOSUS7Configuration|0x0000C10000918200|UINT64|0x50000081
+  
+  ## Determines each attribute on this GPIO <BR><BR>
+  #  BIT0         - Reserved. Should be 0. <BR>
+  #  BIT1         - GPIO TX State. 0 = Low.  1 = High.<BR>
+  #  BIT2..BIT6   - Reserved. Should be 0. <BR>
+  #  BIT7         - GPIO Light Mode. 0 = Disable.  1 = Enable.<BR>
+  #  BIT8..BIT10  - GPIO Config. <BR>
+  #                 0 = GPIO (TX Enabled and RX Enabled).  <BR>
+  #                 1 = GPO (TX Enabled and RX Disabled).  <BR>
+  #                 2 = GPI (TX Disabled and RX Enabled).  <BR>
+  #                 3 = Hi-Z (TX Disabled and RX Disabled).  <BR>
+  #                 Others = Reserved.  <BR>
+  #  BIT11..BIT14 - Reserved. Should be 0. <BR>
+  #  BIT15        - GPIO Enable.  <BR>
+  #                 0 = GPIO disabled and function defined in Pad Mode controls the pad. <BR>
+  #                 1 = GPIO enabled and Pad Register controls the pad. <BR>
+  #  BIT16..BIT19 - PAD Mode.This controls which function controls this particular Pad when GPIO Enable = 0.<BR>
+  #  BIT20..BIT23 - Termination. <BR>
+  #                 BIT20: 20K. 0 = Disable.  1 = Enable. <BR>
+  #                 BIT21: 5K.  0 = Disable.  1 = Enable. <BR>
+  #                 BIT22: 1K.  0 = Disable.  1 = Enable. <BR>
+  #                 BIT23: Pull-up or Pull-down. 0 = Pull-down.  1 = Pull-up. <BR>
+  #  BIT24..BIT25 - Reserved. Should be 0. <BR>
+  #  BIT26..BIT27 - Glitch Filter Config. Enable the Glitch Filter on the RX path to deglitch the incoming signal.<BR>
+  #                 0 = Disable (Bypass the glitch filter). <BR>
+  #                 1 = Enable for Edge Detect Only. <BR>
+  #                 2 = Enable for RX Data Only. <BR>
+  #                 3 = Enable for Edge Detect and RX Data. <BR>
+  #  BIT28..BIT31 - Interrupt Select. It defines which interrupt line driven from the GPIO Controller toggles when <BR>
+  #                 an interrupt is detected on this pad. <BR>
+  #                 0 = Interrupt Line 0.  <BR>
+  #                 1 = Interrupt Line 1.  <BR>
+  #                 ...  <BR>
+  #                 15 = Interrupt Line 15.  <BR>
+  #  BIT32..BIT34 - Interrupt and Wake Configuration.Configure the edge detection logic that is used to trigger interrupts and wakes. <BR>
+  #                 1 = Falling Edge Detect Interrupt/Wake.  <BR>
+  #                 2 = Rising Edge Detect Interrupt/Wake.  <BR>
+  #                 3 = Falling or Rising EdgeDetect Interrupt/Wake.  <BR>
+  #                 4 = Level Interrupt/Wake.  <BR>
+  #                 Others = Reserved.  <BR>
+  #  BIT35        - Open Drain Enable.  0 = Disable.  1 = Enable. <BR>
+  #  BIT36..BIT39 - Invert Rx Tx. These bits invert the RX/TX Data and RX/TX Enables to the CFIO buffer.  <BR>
+  #                 BIT36: Rx Enable.  0 = No Inversion.  1 = Inversion Enabled. <BR>
+  #                 BIT37: Tx Enable.  0 = No Inversion.  1 = Inversion Enabled. <BR>
+  #                 BIT38: Rx Data.    0 = No Inversion.  1 = Inversion Enabled. <BR>
+  #                 BIT39: Tx Data.    0 = No Inversion.  1 = Inversion Enabled. <BR>  
+  #  BIT40..BIT41 - GPE Enable. 0 = Disable. 1 = SMI. 2 = SCI. Others = Reserved.  <BR>
+  #  BIT42        - GPIO Wake capable.  0 = Disable.  1 = Enable. <BR>
+  #  BIT43        - GPIO Interrupt Mask. 0 = Masked.  1 = Unmasked. <BR>
+  #  BIT44..BIT51 - GPIO Wake Mask Bit Position.   
+  #
+  # @Prompt GPIO Pin Configuration of GPIOSUS8 
+  #
+  gPlatformModuleTokenSpaceGuid.PcdGPIOSUS8Configuration|0x0001100000918200|UINT64|0x50000082
+  
+  ## Provides the ability to enable the Fast Boot feature of the BIOS.  This
+  #  enables the system to boot faster but may only enumerate the hardware
+  #  that is required to boot the system.<BR><BR>
+  #
+  # @Prompt Fast Boot Support
+  #
+  gPlatformModuleTokenSpaceGuid.PcdEnableFastBoot|FALSE|BOOLEAN|0x50000083
+
+[PcdsFeatureFlag]
+  ## Platform BDS PCD to control whether to dispatch additional option rom, e.g.: PXE, AHCI
+  gPlatformModuleTokenSpaceGuid.PcdBdsDispatchAdditionalOprom|TRUE|BOOLEAN|0x00000024
+  gPlatformModuleTokenSpaceGuid.PcdUseHeciInCapsuleUpdate|TRUE|BOOLEAN|0x00000027
+  gPlatformModuleTokenSpaceGuid.PcdDiagBootPhasesSerial|FALSE|BOOLEAN|0x00000030
+  
+  ## Indicates if BSP election in SMM will be enabled.
+  #  If enabled, a BSP will be dynamically elected among all processors in each SMI.
+  #  Otherwise, processor 0 is always as BSP in each SMI.<BR><BR>
+  #   TRUE  - BSP election in SMM will be enabled.<BR>
+  #   FALSE - BSP election in SMM will be disabled.<BR>
+  # @Prompt Enable BSP election in SMM.
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmEnableBspElection|TRUE|BOOLEAN|0x32132106
+  ## Indicates if SMM Debug will be enabled.
+  #  If enabled, hardware breakpoints in SMRAM can be set outside of SMM mode and take effect in SMM.<BR><BR>
+  #   TRUE  - SMM Debug will be enabled.<BR>
+  #   FALSE - SMM Debug will be disabled.<BR>
+  # @Prompt Enable SMM Debug.
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmDebug|FALSE|BOOLEAN|0x1000001B
+  ## Indicates if SMM Stack Guard will be enabled.
+  #  If enabled, stack overflow in SMM can be caught which eases debugging.<BR><BR>
+  #   TRUE  - SMM Stack Guard will be enabled.<BR>
+  #   FALSE - SMM Stack Guard will be disabled.<BR>
+  # @Prompt Enable SMM Stack Guard.
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmStackGuard|FALSE|BOOLEAN|0x1000001C
+  ## Indicates if SMM Startup AP in a blocking fashion.
+  #   TRUE  - SMM Startup AP in a blocking fashion.<BR>
+  #   FALSE - SMM Startup AP in a non-blocking fashion.<BR>
+  # @Prompt SMM Startup AP in a blocking fashion.
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmBlockStartupThisAp|FALSE|BOOLEAN|0x32132108
+  ## Indicates if SMM Profile will be enabled.
+  #  If enabled, instruction executions in and data accesses to memory outside of SMRAM will be logged.
+  #  This PCD is only for validation purpose. It should be set to false in production.<BR><BR>
+  #   TRUE  - SMM Profile will be enabled.<BR>
+  #   FALSE - SMM Profile will be disabled.<BR>
+  # @Prompt Enable SMM Profile.
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmProfileEnable|FALSE|BOOLEAN|0x32132109
+  ## Indicates if the SMM profile log buffer is a ring buffer.
+  #  If disabled, no additional log can be done when the buffer is full.<BR><BR>
+  #   TRUE  - the SMM profile log buffer is a ring buffer.<BR>
+  #   FALSE - the SMM profile log buffer is a normal buffer.<BR>
+  # @Prompt The SMM profile log buffer is a ring buffer.
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmProfileRingBuffer|FALSE|BOOLEAN|0x3213210a
+  ## Indicates if SMM MP sync data resides in un-cached RAM.<BR><BR>
+  #   TRUE  - SMM MP sync data will be resided in un-cached RAM.<BR>
+  #   FALSE - SMM MP sync data will be resided in cached RAM.<BR>
+  # @Prompt SMM MP sync data resides in un-cached RAM.
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmUncacheCpuSyncData|FALSE|BOOLEAN|0x3213210D
+  ## Indidates if CPU SMM hot-plug will be enabled.<BR><BR>
+  #   TRUE  - SMM CPU hot-plug will be enabled.<BR>
+  #   FALSE - SMM CPU hot-plug will be disabled.<BR>
+  # @Prompt SMM CPU hot-plug.
+  gEfiCpuTokenSpaceGuid.PcdCpuHotPlugSupport|FALSE|BOOLEAN|0x3213210C
+  ## Indidates if lock SMM Feature Control MSR.<BR><BR>
+  #   TRUE  - SMM Feature Control MSR will be locked.<BR>
+  #   FALSE - SMM Feature Control MSR will not be locked.<BR>
+  # @Prompt Lock SMM Feature Control MSR.
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmFeatureControlMsrLock|TRUE|BOOLEAN|0x3213210B
+  
+[PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic]
+#
+# ACPI timer
+#
+gIntelSiBasicPkgTokenSpaceGuid.PcdAcpiIoBaseAddress|0x1800|UINT16|0x10000021
+gIntelSiBasicPkgTokenSpaceGuid.AcpiTimerLength|24|UINT8|0x10000022
+
+#
+# SATA controller
+#
+gIntelSiBasicPkgTokenSpaceGuid.SataMaxSataPort|8|UINT8|0x10000023
+gIntelSiBasicPkgTokenSpaceGuid.SataMaxDevicesPerPort|1|UINT8|0x10000024
+
+#
+# CPU
+#
+gIntelSiBasicPkgTokenSpaceGuid.CpuNumberOfThreadsPerCore|2|UINT32|0x10000025
+gIntelSiBasicPkgTokenSpaceGuid.CpuNumberOfCoresPerDie|2|UINT32|0x10000026
+gIntelSiBasicPkgTokenSpaceGuid.CpuNumberOfDiesPerPackage|1|UINT32|0x10000027
+gIntelSiBasicPkgTokenSpaceGuid.CpuNumberOfPackages|1|UINT32|0x10000028
+
+gIntelSiBasicPkgTokenSpaceGuid.PcdFlashMicroCodeRegionBase|0xFFD60000|UINT32|0x20000015
+gIntelSiBasicPkgTokenSpaceGuid.PcdFlashMicroCodeRegionSize|0x00023000|UINT32|0x20000016
+gIntelSiBasicPkgTokenSpaceGuid.PcdFlashMicroCodeOffset|0x00|UINT32|0x20000017
+
+#
+# PCI Host bridge
+#
+##
+## PcdEfiGcdAllocateType is using for EFI_GCD_ALLOCATE_TYPE selection
+## value of the struct
+##  0x00 EfiGcdAllocateAnySearchBottomUp
+##  0x01 EfiGcdAllocateMaxAddressSearchBottomUp
+##  0x03 EfiGcdAllocateAnySearchTopDown
+##  0x04 EfiGcdAllocateMaxAddressSearchTopDown
+##
+##  below value should not using in this situation  
+##  0x05 EfiGcdMaxAllocateType : design for max value of struct
+##  0x02 EfiGcdAllocateAddress : design for speccification address allocate
+##
+gIntelSiBasicPkgTokenSpaceGuid.PcdEfiGcdAllocateType|0x01|UINT8|0x40000000
+
+##
+## Allocate 56 KB [0x2000..0xFFFF] of I/O space for Pci Devices
+## If PcdPciReservedMemLimit =0  Pci Reserved default  MMIO Limit is PciExpressBase else use PcdPciReservedMemLimit .
+##
+gIntelSiBasicPkgTokenSpaceGuid.PcdPciReservedIobase   |0x1000     |UINT16|0x00010041
+gIntelSiBasicPkgTokenSpaceGuid.PcdPciReservedIoLimit  |0xFFFF     |UINT16|0x00010042
+gIntelSiBasicPkgTokenSpaceGuid.PcdMmioBase  |0x80000000 |UINT32|0x00010043
+gIntelSiBasicPkgTokenSpaceGuid.PcdPciReservedMemLimit |0x00000000 |UINT32|0x00010044
+gIntelSiBasicPkgTokenSpaceGuid.PcdPciReservedMemAbove4GBBase  |0x0000000000000000 |UINT64|0x00010045
+gIntelSiBasicPkgTokenSpaceGuid.PcdPciReservedMemAbove4GBLimit |0x0000000000000000 |UINT64|0x00010046 
+
+  ## Specifies maximum number of processors supported by the platform.
+  # @Prompt Maximum number of processors supported by the platform.
+  gEfiCpuTokenSpaceGuid.PcdCpuMaxLogicalProcessorNumber|64|UINT32|0x30000002
+  ## Specifies timeout value in microseconds for the BSP in SMM to wait for all APs to come into SMM.
+  # @Prompt AP synchronization timeout value in SMM.
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmApSyncTimeout|1000000|UINT64|0x32132104
+  ## Specifies stack size in bytes for each processor in SMM.
+  # @Prompt Processor stack size in SMM.
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmStackSize|0x2000|UINT32|0x32132105
+  ## Specifies buffer size in bytes to save SMM profile data. The value should be a multiple of 4KB.
+  # @Prompt SMM profile data buffer size.
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmProfileSize|0x200000|UINT32|0x32132107
+  ## Indidates if SMM Code Access Check is enabled.
+  #  If enabled, the SMM handler cannot execut the code outside ranges defined by SMRR.
+  #  This PCD is suggested to TRUE in production image.<BR><BR>
+  #   TRUE  - SMM Code Access Check will be enabled.<BR>
+  #   FALSE - SMM Code Access Check will be disabled.<BR>
+  # @Prompt SMM Code Access Check.
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmCodeAccessCheckEnable|TRUE|BOOLEAN|0x60000013
+
+[PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
+  ## Provides the boot devices and boot orders that will be used by the BIOS 
+  #  to sequentially attempt to boot to different devices.  If the device 
+  #  does not exist, the BIOS will bypass the device and attempt to boot 
+  #  the next device in the boot order.<BR><BR>
+  #
+  #  Supported boot devices:<BR>
+  #  0 - None.<BR>
+  #  1 - Removable Media(\efi\boot\bootxxxx.efi).<BR>
+  #  2 - Load File from Network Devices.<BR>
+  #  3 - Load File from FVs.<BR>
+  #  4 - Load File from Boot Option Set by Third Party (e.g. OS installer).<BR>
+  #  5 - Fixed Media (\efi\boot\bootxxxx.efi).<BR>
+  #  6..15 - Reserved.<BR>
+  #
+  #  Boot order from highest to lowest:<BR>
+  #  Bits  0.. 3 - The first boot target.<BR>
+  #  Bits  4.. 7 - The second boot target.<BR>
+  #  Bits  8..11 - The third boot target.<BR>
+  #  Bits 12..15 - The fourth boot target.<BR>
+  #  Bits 16..19 - The fifth boot target.<BR>
+  #  Bits 20..31 - Reserved.<BR>
+  #
+  # @Prompt Boot Device and Priority Configuration
+  #
+  # @ValidRange 0x80000002 | 0x00000000 - 0x000FFFFF
+  #
+  gPlatformModuleTokenSpaceGuid.PcdBootDeviceAndPriority|0x21354|UINT32|0x6000001B
+
+  ## Provides the BIOS Version string to be used when generating the SMBIOS Type
+  #
+  # @Prompt System BIOS Version
+  #    
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSBiosVersion|"Cherryview Platform BIOS"|VOID*|0xB0000034
+
+  ## Provides the BIOS System UUID to be used when generating the SMBIOS Type 
+  #  UUID valid format like {0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF, 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF}
+  #
+  # @Prompt System UUID
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSSystemUuid|{0xa5, 0x00, 0x02, 0x88, 0x64, 0x62, 0x45, 0x24, 0x98, 0x6a, 0x9b, 0x77, 0x37, 0xe3, 0x15, 0xcf}|VOID*|0xB000003E 
+
+  ## Provides the System manufacture information 
+  #
+  # @Prompt System Manufacturer Strings
+  #   
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSSystemManufacturer|"Intel Corporation"|VOID*|0xB000003A
+  
+  ## Provides the System Version description
+  #
+  # @Prompt System version Strings
+  # 
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSSystemVersion|"0.1"|VOID*|0xB000003C
+  
+  ## Provides the System Serial Number
+  #
+  # @Prompt System SerialNumber Strings
+  # 
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSSystemSerialNumber|"112233445566"|VOID*|0xB000003D
+
+  ## Provides the Board Manufacturer description
+  #
+  # @Prompt Board Manufacturer String
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSBoardManufacturer|"Intel Corp."|VOID*|0xB0000041
+  
+  ## Provides the Board Version description
+  #
+  # @Prompt Board Product Version String
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSBoardVersion|"FAB"|VOID*|0xB0000043
+  
+  ## Provides the Board Serial Number description
+  #
+  # @Prompt Board Serial Number String
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSBoardSerialNumber|"1"|VOID*|0xB0000044 
+
+  ## Provides the inforation about system's enclosure.
+  #  Manufacture to describe the Chassis Manufacture Name.<BR><BR>
+  #
+  # @Prompt Chassis Manufacturer String  
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSChassisManufacturer|"Intel Corporation"|VOID*|0xB0000045
+  
+  ## Provides the inforation about system's enclosure.
+  #  This will be used to describe the Chassis Version.<BR><BR>
+  #
+  # @Prompt Chassis Version String  
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSChassisVersion|"0.1"|VOID*|0xB0000046
+
+  ## Provides the inforation about system's enclosure.
+  #  This will be used to describe  the Chassis Serial Number.<BR><BR>
+  #
+  # @Prompt Chassis SerialNumber String  
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSChassisSerialNumber|"serial"|VOID*|0xA0000047
+
+  ## Provides the inforation about system's enclosure.
+  #  This will be used to describe the Chassis Asset Tag.<BR><BR>
+  #
+  # @Prompt Chassis Asset Tag String   
+  gPlatformModuleTokenSpaceGuid.PcdSMBIOSChassisAssetTag|"Asset Tag"|VOID*|0xB0000300
+  
+  ## Provides the ability to configure the terminal type to be used.<BR><BR>
+  #  0 - PcAnsi<BR>
+  #  1 - VT100<BR>
+  #  2 - VT100Plus<BR>
+  #  3 - VTUTF8<BR>
+  #
+  # @Prompt Terminal Configuration
+  #
+  # @ValidRange 0x80000003 | 0x00 - 0x03
+  #
+  gPlatformModuleTokenSpaceGuid.PcdTerminalType|0|UINT8|0x6000001D
+ 
+  ## If the firmware has a User Interface this feature provides the ability to interrupt 
+  #  fast boot and enter the firmware user interface.<BR>
+  #
+  # @Prompt Enter Firmware User Interface Support
+  #
+  gPlatformModuleTokenSpaceGuid.PcdBootToFirmwareUserInterface|FALSE|BOOLEAN|0x6000001E
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdSsidSvid|0x12348086|UINT32|0x4000000B
+  
+  gPlatformModuleTokenSpaceGuid.PcdFspAuthenticatedVariable|TRUE|BOOLEAN|0x6000001F
+  
+  ## Indidates if SMM Delay feature is supported.<BR><BR>
+  #   TRUE  - SMM Delay feature is supported.<BR>
+  #   FALSE - SMM Delay feature is not supported.<BR>
+  # @Prompt SMM Delay feature.
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmUseDelayIndication|TRUE|BOOLEAN|0x60000018
+  ## Indidates if SMM Block feature is supported.<BR><BR>
+  #   TRUE  - SMM Block feature is supported.<BR>
+  #   FALSE - SMM Block feature is not supported.<BR>
+  # @Prompt SMM Block feature.
+  gEfiCpuTokenSpaceGuid.PcdCpuSmmUseBlockIndication|TRUE|BOOLEAN|0x60000019
+  
+[PcdsDynamic,PcdsDynamicEx]
+  gPlatformModuleTokenSpaceGuid.PcdInConfigMode|FALSE|BOOLEAN|0x80000001
+  gPlatformModuleTokenSpaceGuid.PcdSkrsSupport|FALSE|BOOLEAN|0x80000008
+  
+  ## This PCD holds EFI_PLATFORM_INFO_HOB data.
+  #  The board specific file should produce it before FSP init and platform driver will consume it.
+  # @Prompt Board Specific configuration.
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdPlatformInfo|{0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}|VOID*|0x4000000A
+
+  ## This PCD holds GPIO init function pointer.
+  #  The board specific file could provide a GPIO initialization function if needed after FSP init,
+  #  platform driver will call this function.
+  # @Prompt GPIO initialization function.
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdGpioInitFunc|0|UINT64|0x4000000C
+
+  ## This PCD holds the pointer of byte arry of memory SPD data .
+  #  The board specific file should produce it before FSP init and platform driver will consume it and pass to FSP.
+  # @Prompt Memory SPD data pointer.
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdMemorySpdPtr|0|UINT64|0x4000000D
+
+  ## This PCD indicate if there is NFC connnection on system.
+  #  The board specific file should produce it and ACPI driver will consume it.
+  # @Prompt NFC Connection (1:I2C7 2:SEC)
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdNfcConnection|1|UINT8|0x4000000F
+  
+  ## This PCD holds SYSTEM_CONFIGURATION data.
+  # @Prompt Platform Specific configuration.
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdSystemConfiguration|{0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}|VOID*|0x40000010
+
+  ## 0 - DIMM; 1 - Solder Down.
+  # @Prompt Platform Specific configuration.
+  gEfiEdkIIPlatformTokenSpaceGuid.PcdOemMemeoryDimmType|0|UINT8|0x40000013
+  
+  ## Contains the pointer to CPU Configuration Context Buffer defined in the CpuConfigLib.
+  # @Prompt The pointer to CPU Configuration Context Buffer.
+  gEfiCpuTokenSpaceGuid.PcdCpuConfigContextBuffer|0x0|UINT64|0x50000001
+  ## Used for a callback mechanism for the CPU MP driver. 
+  #  The CPU MP driver will set this PCD at pre-defined points. If there is callback function registered on it, 
+  #  the callback function will be triggered, and it may change the value of PcdCpuCallbackSignal.
+  # @Prompt PCD for CPU callback signal.
+  gEfiCpuTokenSpaceGuid.PcdCpuCallbackSignal|0x0|UINT8|0x50000002
+  ## Contains the pointer to a CPU S3 data buffer of structure ACPI_CPU_DATA.
+  # @Prompt The pointer to a CPU S3 data buffer.
+  gEfiCpuTokenSpaceGuid.PcdCpuS3DataAddress|0x0|UINT64|0x60000010
+  ## Contains the pointer to a CPU Hot Plug Data structure if CPU hot-plug is supported.
+  # @Prompt The pointer to CPU Hot Plug Data.
+  gEfiCpuTokenSpaceGuid.PcdCpuHotPlugDataAddress|0x0|UINT64|0x60000011
+
